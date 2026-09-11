@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#7b2f75">
+  <meta name="description" content="مفاجأة عيد ميلاد ريناس Abdalkreem">
+  <title>عيد ميلاد ريناس 💗</title><style>
+    * { box-sizing: border-box; }
+    html, body { margin:0; min-height:100%; }
+    body {
+      min-height:100vh; min-height:100dvh; overflow-x:hidden;
+      font-family:"Cairo", system-ui, sans-serif; color:#fff;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(255,190,224,.38), transparent 28%),
+        radial-gradient(circle at 85% 80%, rgba(190,145,255,.35), transparent 30%),
+        linear-gradient(145deg,#4d245f 0%,#8b3d83 45%,#d25c93 100%);
+      display:flex; align-items:center; justify-content:center;
+      padding:24px 16px; position:relative;
+    }
+    body::before {
+      content:""; position:fixed; inset:0; pointer-events:none;
+      background:linear-gradient(115deg,rgba(255,255,255,.08),transparent 35%,rgba(255,255,255,.06));
+    }
+    .sparkles,.hearts { position:fixed; inset:0; pointer-events:none; overflow:hidden; }
+    .sparkles span,.hearts span {
+      position:absolute; opacity:.7; animation:float 7s ease-in-out infinite;
+      filter:drop-shadow(0 0 8px rgba(255,255,255,.65));
+    }
+    .sparkles span:nth-child(1){left:8%;top:15%;font-size:18px}
+    .sparkles span:nth-child(2){left:83%;top:11%;font-size:14px;animation-delay:1.2s}
+    .sparkles span:nth-child(3){left:12%;bottom:17%;font-size:12px;animation-delay:2s}
+    .sparkles span:nth-child(4){right:9%;bottom:22%;font-size:20px;animation-delay:3s}
+    .hearts span:nth-child(1){left:4%;top:48%;font-size:22px;animation-delay:.4s}
+    .hearts span:nth-child(2){right:4%;top:35%;font-size:17px;animation-delay:1.8s}
+    .hearts span:nth-child(3){right:15%;bottom:8%;font-size:14px;animation-delay:2.6s}
+    @keyframes float { 0%,100%{transform:translateY(0) rotate(-4deg)} 50%{transform:translateY(-18px) rotate(7deg)} }
+
+    .card {
+      width:min(100%,430px); padding:34px 22px 26px; text-align:center;
+      border:1px solid rgba(255,255,255,.28); border-radius:32px;
+      background:linear-gradient(145deg,rgba(255,255,255,.20),rgba(255,255,255,.08));
+      box-shadow:0 24px 70px rgba(40,10,55,.35), inset 0 1px rgba(255,255,255,.28);
+      backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+      animation:cardIn .9s ease both; position:relative;
+    }
+    @keyframes cardIn { from{opacity:0;transform:translateY(20px) scale(.97)} to{opacity:1;transform:none} }
+    .emoji-title { font-size:43px; letter-spacing:5px; margin-bottom:8px; animation:breathe 3s ease-in-out infinite; }
+    @keyframes breathe { 50%{transform:scale(1.06)} }
+    .eyebrow { font-size:14px; opacity:.85; letter-spacing:1px; margin:0 0 3px; }
+    h1 { margin:0; font-size:34px; font-weight:800; text-shadow:0 4px 20px rgba(55,10,65,.28); }
+    .latin { font-family:"Playfair Display",serif; direction:ltr; font-size:20px; margin-top:2px; opacity:.96; }
+    .line { width:65px;height:3px;border-radius:9px;background:rgba(255,255,255,.55);margin:18px auto; }
+    .subtitle { font-size:16px; margin:0 0 14px; font-weight:600; }
+    .target { font-size:13px; opacity:.82; margin-bottom:18px; }
+    .countdown { display:grid;grid-template-columns:repeat(4,1fr);gap:8px;direction:ltr; }
+    .unit {
+      padding:12px 4px 10px;border-radius:18px;background:rgba(255,255,255,.13);
+      border:1px solid rgba(255,255,255,.16); box-shadow:inset 0 1px rgba(255,255,255,.12);
+    }
+    .num { display:block;font-size:27px;font-weight:800;line-height:1.1; }
+    .label { display:block;font-size:11px;opacity:.8;margin-top:5px; }
+    .surprise {
+      width:100%; border:0; margin-top:22px; padding:15px 18px; border-radius:18px;
+      font:700 17px "Cairo",sans-serif; color:#6d255f; cursor:pointer;
+      background:linear-gradient(135deg,#fff,#ffd9ec); box-shadow:0 10px 30px rgba(50,10,55,.25);
+      transition:transform .18s ease, box-shadow .18s ease;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .surprise:active { transform:scale(.97); }
+    .message { max-height:0;opacity:0;overflow:hidden;transition:max-height .7s ease,opacity .6s ease,margin .7s ease; }
+    .message.show { max-height:260px;opacity:1;margin-top:18px; }
+    .surprise-countdown { direction:ltr; letter-spacing:1px; }\n    .message-box { padding:18px;border-radius:20px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);line-height:1.9;font-size:15px; }
+    .footer { margin-top:18px;font-size:11px;opacity:.6; }
+    .confetti { position:fixed; width:8px;height:14px;top:-20px;pointer-events:none;z-index:20;animation:fall 2.8s linear forwards; }
+    @keyframes fall { to{transform:translate3d(var(--x),110vh,0) rotate(720deg);opacity:0} }
+    .pop-heart { position:fixed;pointer-events:none;z-index:21;font-size:22px;animation:heartPop 1.5s ease-out forwards; }
+    @keyframes heartPop { 0%{transform:translate(-50%,-50%) scale(.4);opacity:0} 20%{opacity:1} 100%{transform:translate(calc(-50% + var(--dx)),calc(-50% - 150px)) scale(1.2);opacity:0} }
+    @media (max-height:650px){ .card{padding-top:24px;padding-bottom:20px}.emoji-title{font-size:35px}h1{font-size:29px}.line{margin:12px auto}.surprise{margin-top:16px} }
+    @media (prefers-reduced-motion:reduce){ *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important} }
+  </style>
+</head>
+<body>
+  <div class="sparkles" aria-hidden="true"><span>✦</span><span>✧</span><span>✦</span><span>✧</span></div>
+  <div class="hearts" aria-hidden="true"><span>♡</span><span>♡</span><span>♥</span></div>
+
+  <main class="card">
+    <div class="emoji-title" aria-hidden="true">🎂 💗</div>
+    <p class="eyebrow">إلى أخت غالية على القلب</p>
+    <h1>عيد ميلاد ريناس</h1>
+    <div class="latin">Renas Abdalkreem ✨</div>
+    <div class="line"></div>
+
+    <p class="subtitle">باقي على يومك المميز...</p>
+    <div class="target">3 أكتوبر 2026 · الساعة 12:00 منتصف الليل · الأردن</div>
+
+    <section class="countdown" aria-label="العد التنازلي">
+      <div class="unit"><span class="num" id="days">00</span><span class="label">يوم</span></div>
+      <div class="unit"><span class="num" id="hours">00</span><span class="label">ساعة</span></div>
+      <div class="unit"><span class="num" id="minutes">00</span><span class="label">دقيقة</span></div>
+      <div class="unit"><span class="num" id="seconds">00</span><span class="label">ثانية</span></div>
+    </section>
+
+    <button class="surprise" id="surpriseBtn" type="button">🎁 اضغطي للمفاجأة</button>
+
+    <div class="message" id="message">
+      <div class="message-box">
+        <div style="font-size:28px;margin-bottom:6px">🎁✨</div>
+        <strong>المفاجأة الحقيقية تبدأ هنا!</strong>
+        <div style="margin-top:10px">موعد المفاجأة: <strong>3 أكتوبر 2026 · الساعة 9:00 صباحًا</strong> ⏰</div>
+        <div class="surprise-countdown" style="margin-top:12px;font-weight:800;font-size:18px" id="surpriseCountdown">00:00:00:00</div>
+        <div style="margin-top:12px">
+          كل عام وأنتِ بخير يا ريناس! 💗<br>
+          وجودك بحياتي كأخت غالية نعمة، وإن شاء الله سنتك الجديدة تكون مليانة فرح ونجاح وذكريات حلوة 🌷✨
+        </div>
+      </div>
+    </div>
+    <div class="footer">من أخوكي نورس إلى أختي الغالية ريناس، بمناسبة عيد ميلادك 🎀</div>
+  </main>
+
+  <script>
+    // عيد الميلاد: 3 أكتوبر 2026، الساعة 00:00 بتوقيت الأردن (UTC+3)
+    const target = Date.UTC(2026, 9, 2, 21, 0, 0);
+    // موعد المفاجأة: 3 أكتوبر 2026، الساعة 09:00 صباحًا بتوقيت الأردن (UTC+3)
+    const surpriseTarget = Date.UTC(2026, 9, 3, 6, 0, 0);
+    const $ = id => document.getElementById(id);
+    let celebrated = false;
+
+    function pad(n){ return String(Math.max(0, n)).padStart(2, "0"); }
+
+    function updateCountdown(){
+      const diff = target - Date.now();
+      if(diff <= 0){
+        ["days","hours","minutes","seconds"].forEach(id => $(id).textContent = "00");
+        if(!celebrated){
+          $("surpriseBtn").textContent = "🎉 اليوم يومك يا ريناس!";
+        }
+        return;
+      }
+      const total = Math.floor(diff / 1000);
+      const days = Math.floor(total / 86400);
+      const hours = Math.floor((total % 86400) / 3600);
+      const minutes = Math.floor((total % 3600) / 60);
+      const seconds = total % 60;
+      $("days").textContent = days;
+      $("hours").textContent = pad(hours);
+      $("minutes").textContent = pad(minutes);
+      $("seconds").textContent = pad(seconds);
+    }
+
+    function updateSurpriseCountdown(){
+      const el = $("surpriseCountdown");
+      if(!el) return;
+      const diff = surpriseTarget - Date.now();
+      if(diff <= 0){
+        el.textContent = "🎉 حان وقت المفاجأة! 🎉";
+        return;
+      }
+      const total = Math.floor(diff / 1000);
+      const d = Math.floor(total / 86400);
+      const h = Math.floor((total % 86400) / 3600);
+      const m = Math.floor((total % 3600) / 60);
+      const s = total % 60;
+      el.textContent = `${pad(d)}:${pad(h)}:${pad(m)}:${pad(s)}`;
+    }
+
+    function confettiBurst(){
+      const symbols = ["💗","✨","🎀","💕","✦"];
+      for(let i=0;i<42;i++){
+        const el = document.createElement("div");
+        el.className = "confetti";
+        el.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+        el.style.left = (Math.random()*100) + "vw";
+        el.style.setProperty("--x", ((Math.random()-.5)*180) + "px");
+        el.style.animationDelay = (Math.random()*0.7) + "s";
+        el.style.fontSize = (10 + Math.random()*12) + "px";
+        document.body.appendChild(el);
+        setTimeout(()=>el.remove(),3800);
+      }
+      const x = innerWidth/2, y = innerHeight*.48;
+      for(let i=0;i<16;i++){
+        const h = document.createElement("div");
+        h.className="pop-heart"; h.textContent = i%2 ? "💗" : "✨";
+        h.style.left=x+"px"; h.style.top=y+"px";
+        h.style.setProperty("--dx", ((Math.random()-.5)*240)+"px");
+        h.style.animationDelay=(Math.random()*.25)+"s";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),1900);
+      }
+    }
+
+    $("surpriseBtn").addEventListener("click",()=>{
+      $("message").classList.add("show");
+      celebrated = true;
+      $("surpriseBtn").textContent = "🎀 تم فتح المفاجأة!";
+      confettiBurst();
+    });
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);\n    updateSurpriseCountdown();\n    setInterval(updateSurpriseCountdown,1000);
+  </script>
+</body>
+</html>
