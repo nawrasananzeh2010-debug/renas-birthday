@@ -28,6 +28,8 @@
     const boot = document.getElementById("boot");
 
     async function pickView() {
+      const once = TJ.ls.get("tj_view_once");
+      if (once === "dad" || once === "nawras") { TJ.ls.set("tj_view_once", ""); return once; }
       const h = location.hash.slice(1);
       if (h === "dad" || h === "nawras") return h;
       const user = await TJ.getCap("user", 4000);
@@ -49,14 +51,36 @@
       boot.classList.add("hide"); setTimeout(() => boot.remove(), 700);
     }
 
+    function switchTo(v) {
+      TJ.ls.set("tj_view_once", v);
+      try { location.hash = v; } catch {}
+      location.reload();
+    }
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest("[data-switch]"); if (!a) return;
+      e.preventDefault(); switchTo(a.dataset.switch);
+    });
+    function addSwitcher(v) {
+      const b = document.createElement("button");
+      b.className = "btn ghost sm"; b.dataset.switch = v === "dad" ? "nawras" : "dad";
+      b.textContent = v === "dad" ? "🎓 رجوع لصفحتي" : "👨‍👦 صفحة أبوي";
+      const row = document.querySelector("header.top .row");
+      if (row) row.prepend(b); else { b.style.cssText = "position:fixed;top:12px;left:12px;z-index:45"; document.body.appendChild(b); }
+    }
+
     let current = null;
-    pickView().then((v) => { current = v; return load(v); }).catch((e) => {
+    pickView().then(async (v) => {
+      current = v; await load(v);
+      const user = await TJ.getCap("user", 3000);
+      let owner = !user; try { if (user) owner = !!(await user.isOwner()); } catch {}
+      if (owner) addSwitcher(v); // الزر بيظهر لنورس بس
+    }).catch((e) => {
       console.error(e);
       boot.querySelector(".small").textContent = "صار خطأ بالتحميل — حدّث الصفحة";
     });
     addEventListener("hashchange", () => {
       const h = location.hash.slice(1);
-      if ((h === "dad" || h === "nawras") && current && h !== current) location.reload();
+      if ((h === "dad" || h === "nawras") && current && h !== current) switchTo(h);
     });
   }
   </script>
