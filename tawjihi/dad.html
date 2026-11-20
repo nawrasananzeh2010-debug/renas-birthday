@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#07061a">
+  <title>متابعة نورس — لوحة الوالد</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍👦</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .live-hero { text-align: center; padding: 34px 22px; }
+    .live-num { font-size: clamp(3.2rem, 11vw, 5.6rem); font-weight: 900; line-height: 1; }
+    .live-sub { color: var(--muted); font-size: 1.05rem; margin-top: 8px; }
+    .today-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
+    .today-grid > div { padding: 14px 8px; border-radius: 16px; background: rgba(255,255,255,.05); border: 1px solid var(--card-b); }
+    .today-grid b { font-size: 1.7rem; font-weight: 900; display: block; }
+    .today-grid span { font-size: .8rem; color: var(--muted); }
+    .rings3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 760px) { .rings3 { grid-template-columns: 1fr; } }
+    .rcard { text-align: center; }
+    .rcard h3 { justify-content: center; margin-top: 10px; }
+    .verdict { padding: 16px; border-radius: 18px; display: flex; gap: 14px; align-items: center; }
+    .verdict .e { font-size: 2.2rem; }
+    .verdict.good { background: linear-gradient(135deg, rgba(16,185,129,.18), rgba(59,130,246,.1)); border: 1px solid rgba(52,211,153,.35); }
+    .verdict.bad { background: linear-gradient(135deg, rgba(251,113,133,.16), rgba(251,191,36,.08)); border: 1px solid rgba(251,113,133,.35); }
+    .hbar-row { display: grid; grid-template-columns: 120px 1fr 70px; gap: 10px; align-items: center; margin: 10px 0; font-size: .9rem; }
+    .new-tag { font-size: .68rem; background: linear-gradient(135deg,#ec4899,#8b5cf6); padding: 2px 8px; border-radius: 99px; margin-inline-start: 6px; animation: pulse 2s infinite; }
+    .mini .lessons { grid-template-columns: repeat(auto-fill, minmax(34px, 1fr)); gap: 5px; }
+    .mini .lesson { border-radius: 9px; font-size: .72rem; }
+    .mini .lesson small { display: none; }
+    .notif-step { display: flex; gap: 12px; align-items: flex-start; margin-top: 12px; }
+    .notif-step .n { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-weight: 900; background: linear-gradient(135deg,#8b5cf6,#ec4899); font-size: .85rem; }
+    .welcome { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; background: radial-gradient(circle at 50% 40%, #241a5a, #07061a 70%); transition: opacity .9s, visibility .9s; text-align: center; padding: 20px; }
+    .welcome.hide { opacity: 0; visibility: hidden; }
+    .welcome .big { font-size: clamp(2rem, 7vw, 3.4rem); font-weight: 900; animation: wIn 1.2s var(--ease) both; }
+    .welcome .sub { color: var(--muted); margin-top: 10px; animation: wIn 1.2s .3s var(--ease) both; }
+    .welcome .e { font-size: 4rem; animation: wIn 1s var(--ease) both, float 4s ease-in-out infinite 1s; display: block; margin-bottom: 10px; }
+    @keyframes wIn { from { opacity: 0; transform: translateY(30px) scale(.9); filter: blur(8px); } }
+  </style>
+</head>
+<body>
+
+<div class="welcome" id="welcome">
+  <div>
+    <span class="e">👨‍👦</span>
+    <div class="big">أهلاً <span class="grad">أبو نورس</span> 🌹</div>
+    <div class="sub">جارِ تحميل إنجازات نورس…</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="top reveal">
+    <div class="brand">
+      <div class="logo">👨‍👦</div>
+      <div><b>متابعة توجيهي نورس</b><span>لوحة الوالد العزيز</span></div>
+    </div>
+    <div class="row">
+      <span class="pill" id="sync"><i class="dot"></i><span>جارِ الاتصال…</span></span>
+      <span class="pill" id="lastUpd">آخر تحديث: —</span>
+    </div>
+  </header>
+
+  <!-- إنجاز اليوم المباشر -->
+  <section class="grid g2">
+    <div class="card live-hero reveal" id="todayCard">
+      <div class="muted" style="font-weight:800">📅 <span id="todayDate"></span></div>
+      <div class="live-num grad mt" id="todayPg">0</div>
+      <div class="live-sub" id="todayTxt">صفحة أنجزها نورس اليوم</div>
+      <div class="today-grid">
+        <div><b id="todayLs">0</b><span>دروس اليوم</span></div>
+        <div><b id="todayMn">0</b><span>دقيقة دراسة</span></div>
+        <div><b id="streak">0</b><span>🔥 أيام متواصلة</span></div>
+      </div>
+    </div>
+    <div class="card reveal d1" style="display:flex;flex-direction:column;justify-content:center">
+      <div class="cd-title">⏳ باقي على امتحانات التوجيهي</div>
+      <div class="cd" id="cd">
+        <div><b data-cd="d">0</b><span>يوم</span></div>
+        <div><b data-cd="h">00</b><span>ساعة</span></div>
+        <div><b data-cd="m">00</b><span>دقيقة</span></div>
+        <div><b data-cd="s">00</b><span>ثانية</span></div>
+      </div>
+      <div class="cd-date" id="examDate"></div>
+      <div class="dua" id="dua"></div>
+    </div>
+  </section>
+
+  <!-- الحلقات -->
+  <h2 class="sec-title reveal">🎯 الإنجاز الكلي</h2>
+  <div class="rings3">
+    <div class="card rcard reveal" id="r1"></div>
+    <div class="card rcard reveal d1" id="r2"></div>
+    <div class="card rcard reveal d2" id="r3"></div>
+  </div>
+
+  <!-- التقييم -->
+  <div class="card mt reveal"><div id="verdict"></div></div>
+
+  <!-- مؤشرات -->
+  <h2 class="sec-title reveal">💡 مؤشرات ذكية</h2>
+  <div class="grid g4" id="insights"></div>
+
+  <!-- المواد -->
+  <h2 class="sec-title reveal">📚 تفاصيل المواد والدروس</h2>
+  <div class="grid g2" id="subjects"></div>
+
+  <!-- المخططات -->
+  <div class="grid g2 mt2">
+    <div class="card reveal"><h3>📈 الصفحات اليومية — آخر 14 يوم</h3><div id="chart" class="mt"></div></div>
+    <div class="card reveal d1"><h3>🧭 توزيع الصفحات على المواد</h3><div id="dist" class="mt"></div></div>
+  </div>
+
+  <!-- السجل والرسائل -->
+  <div class="grid g2 mt2">
+    <div class="card reveal">
+      <h3>🕒 سجل إنجازات نورس</h3>
+      <div class="timeline mt" id="log" style="max-height:520px;overflow:auto"></div>
+    </div>
+    <div class="grid" style="gap:16px">
+      <div class="card reveal d1">
+        <h3>💌 ابعث رسالة لنورس</h3>
+        <div class="small muted">بتوصله فوراً وبتظهر على صفحته</div>
+        <div class="chips mt" id="quick"></div>
+        <textarea id="msgText" rows="2" class="mt" maxlength="300" placeholder="اكتب رسالتك أو دعاءك لنورس…"></textarea>
+        <div class="row mt" style="justify-content:flex-end"><button class="btn" id="sendMsg">📨 إرسال</button></div>
+        <div id="sent" class="mt" style="max-height:220px;overflow:auto"></div>
+      </div>
+      <div class="card reveal d2">
+        <h3>🔔 إشعارات الإنجاز على كروم</h3>
+        <div class="notif-step"><span class="n">1</span><div class="grow"><b>إشعار والصفحة مفتوحة</b><div class="small muted">اسمح للمتصفح يبعتلك إشعار كل ما نورس يسجل إنجاز</div>
+          <button class="btn sm mt" id="enableNotif">🔔 تفعيل إشعارات المتصفح</button></div></div>
+        <div class="notif-step"><span class="n">2</span><div class="grow"><b>إشعار حتى والصفحة مسكّرة</b><div class="small muted">افتح الرابط على كروم (أو تطبيق ntfy على الموبايل) واضغط <b>Subscribe</b> ثم اسمح بالإشعارات — مرة وحدة بس</div>
+          <a class="btn sm ghost mt" id="ntfyLink" target="_blank" rel="noopener">📲 اشترك بالإشعارات</a></div></div>
+        <div class="notif-step"><span class="n">3</span><div class="grow"><b>الصوت</b><div class="chips mt"><button class="chip" id="soundBtn"></button></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="sec-title reveal">🏅 أوسمة نورس</h2>
+  <div class="card reveal"><div class="badges" id="badges"></div></div>
+
+  <div class="foot">اللهم وفّق نورس وأقرّ أعيننا بنجاحه 🤲</div>
+</div>
+
+<script src="config.js"></script>
+<script src="core.js"></script>
+<script>
+(() => {
+  const T = TJ, $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const SEEN = "tj_dad_seen_" + T.CFG.channelId;
+  let st = T.loadLocal(), firstRender = true, prevSeen = +localStorage.getItem(SEEN) || 0, booted = false;
+  const soundOn = () => localStorage.getItem("tj_dad_sound") !== "0";
+
+  T.starfield();
+  T.countdown($("#cd"));
+  T.rotator($("#dua"), T.DUAS, 9000);
+  $("#examDate").textContent = "موعد الامتحانات المتوقع: " + T.fmtDate(T.EXAM);
+  setTimeout(() => $("#welcome").classList.add("hide"), 1700);
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest(".btn"); if (!b) return;
+    const r = b.getBoundingClientRect(), s = document.createElement("span"), d = Math.max(r.width, r.height);
+    s.className = "rip"; s.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX - r.left - d / 2}px;top:${e.clientY - r.top - d / 2}px`;
+    b.appendChild(s); setTimeout(() => s.remove(), 650);
+  });
+
+  const fmtL = (x) => (Math.round(x * 100) / 100).toString();
+
+  function render() {
+    const S = T.stats(st), name = T.CFG.studentName;
+    $("#todayDate").textContent = T.fmtDate(new Date());
+    T.countUp($("#todayPg"), S.today.pg || 0, { dur: 1600 });
+    $("#todayTxt").textContent = (S.today.pg || S.today.dq || S.today.mn) ? `صفحة أنجزها ${name} اليوم 👏` : `${name} لسا ما سجّل إنجاز اليوم — الصفحة رح تتحدث لحالها`;
+    T.countUp($("#todayLs"), (S.today.dq || 0) / 4, { dec: (S.today.dq || 0) % 4 ? 2 : 0 });
+    T.countUp($("#todayMn"), S.today.mn || 0);
+    T.countUp($("#streak"), S.streak);
+    $("#lastUpd").textContent = "آخر تحديث من نورس: " + T.relTime(st.ts);
+
+    const rc = (pct, title, sub, c1, c2, id, extra = "") => `<div class="ring-box big-ring">${T.ring(pct, { size: 160, stroke: 13, color: c1, color2: c2, id })}
+      <div class="ring-label"><div>${extra || `<b>${pct.toFixed(1)}%</b>`}</div></div></div><h3>${title}</h3><div class="small muted">${sub}</div>`;
+    $("#r1").innerHTML = rc(S.s1.pct, "📘 الفصل الأول كامل", `${S.s1.done} من ${S.s1.n} درس مكتمل`, "#8b5cf6", "#ec4899", "d1");
+    $("#r2").innerHTML = S.s2.released ? rc(S.s2.pct, "📗 الفصل الثاني كامل", `${S.s2.done} من ${S.s2.n} درس`, "#059669", "#3b82f6", "d2")
+      : rc(0, "📗 الفصل الثاني", "ولا مادة فصل ثاني نزلت لحد الآن", "#059669", "#3b82f6", "d2", `<span class="badge-soon" style="font-size:.85rem">⏳ لم ينزل بعد</span>`);
+    $("#r3").innerHTML = rc(S.all.pct, "🎓 التوجيهي بالكامل", S.s2.released ? `${S.all.done} من ${S.all.n} درس` : "من المنهاج المتوفر حالياً", "#d97706", "#db2777", "d3");
+
+    // التقييم
+    const good = S.avgPerDay >= S.required && S.avgPerDay > 0;
+    const projTxt = S.projDate ? `بهالسرعة رح يخلّص المنهاج المتوفر تقريباً بـ <b>${T.fmtDate(S.projDate)}</b>` : "لسا ما في بيانات كافية لتوقّع موعد الإنهاء";
+    $("#verdict").innerHTML = `<div class="verdict ${good ? "good" : "bad"}"><span class="e">${good ? "🚀" : "⏰"}</span><div>
+      <b style="font-size:1.1rem">${good ? `${name} ماشي على الطريق الصح! ما شاء الله` : `${name} بحاجة يزيد السرعة شوي`}</b>
+      <div class="small muted" style="margin-top:4px">معدّله آخر 14 يوم: <b>${fmtL(S.avgPerDay)}</b> درس/يوم · المطلوب: <b>${fmtL(S.required)}</b> درس/يوم ليخلّص قبل الامتحان بشهر · ${projTxt}</div></div></div>`;
+
+    // المؤشرات
+    const ins = [
+      ["🔥", "أطول سلسلة التزام", `${S.bestStreak}`, "يوم"],
+      ["📄", "مجموع الصفحات", `${S.totalPages}`, "صفحة"],
+      ["⏱️", "مجموع ساعات الدراسة", `${(S.totalMin / 60).toFixed(1)}`, "ساعة"],
+      ["📆", "أيام دراسة آخر أسبوعين", `${S.activeDays14}`, "من 14"],
+      ["✅", "دروس آخر أسبوعين", fmtL(S.lessons14), "درس"],
+      ["🏆", "أفضل يوم", S.bestDay && S.bestDay.pg ? `${S.bestDay.pg}` : "—", S.bestDay && S.bestDay.pg ? "صفحة · " + T.fmtShort(S.bestDay.key + "T12:00") : ""],
+      ["📚", "الدروس المتبقية", fmtL(S.remaining), "درس (المتوفر)"],
+      ["⏳", "الأيام المتبقية", `${S.daysLeft}`, "يوم للامتحان"],
+    ];
+    $("#insights").innerHTML = ins.map(([e, k, v, u], i) => `<div class="card hover stat ${firstRender ? `reveal d${(i % 4) + 1}` : ""}"><span class="k">${e} ${k}</span><span class="v">${v}<small> ${u}</small></span></div>`).join("");
+
+    // المواد
+    $("#subjects").innerHTML = T.SUBJECTS.map((s, i) => {
+      const a = T.semInfo(st, s.id, "s1"), b = T.semInfo(st, s.id, "s2"), t = T.subjectTotal(st, s.id);
+      let idx = 0;
+      const units = st.cur[s.id].s1.map((n, u) => {
+        const seg = st.p[s.id].s1.slice(idx, idx + n), done = [...seg].filter((c) => c === "4").length;
+        const q = [...seg].reduce((x, c) => x + +c, 0);
+        const h = `<div class="unit"><div class="unit-h"><b>الوحدة ${u + 1}</b><span>${done}/${n} ✓ · ${Math.round((q / (4 * n)) * 100)}%</span></div><div class="lessons">` +
+          [...seg].map((c, k) => `<div class="lesson ro ${c === "4" ? "done" : ""}" style="--c:${s.color};--p:${+c * 25}%" title="الدرس ${idx + k + 1}: ${+c * 25}%"><div class="fill"></div><span>${idx + k + 1}</span></div>`).join("") + `</div></div>`;
+        idx += n; return h;
+      }).join("");
+      return `<div class="card subj mini ${firstRender ? `reveal d${(i % 2) + 1}` : ""}" style="--c:${s.color};cursor:default">
+        <div class="glow"></div>
+        <div class="head"><div class="ico">${s.icon}</div><div class="grow"><h3>${s.name}</h3><div class="small muted">${a.n} درس · ${st.cur[s.id].s1.length} وحدات</div></div>
+          <div class="ring-box">${T.ring(a.pct, { size: 70, stroke: 7, color: s.color, id: "dr" + s.id })}<div class="ring-label"><b style="font-size:.95rem">${Math.round(a.pct)}%</b></div></div></div>
+        <div class="sems">
+          <div class="sem"><div class="t">الفصل الأول</div><div class="n">${a.pct.toFixed(1)}% <span class="small muted">· ${a.done}/${a.n}</span></div></div>
+          <div class="sem"><div class="t">الفصل الثاني</div><div class="n">${b.released ? `${b.pct.toFixed(1)}% <span class="small muted">· ${b.done}/${b.n}</span>` : '<span class="badge-soon">لم ينزل بعد</span>'}</div></div>
+        </div>
+        <div class="bar mt" style="--c:${s.color}"><i style="width:${t.pct}%"></i></div>
+        ${units}
+      </div>`;
+    }).join("");
+    setTimeout(() => $$(".bar > i[style*='width']").forEach((el) => { const w = el.style.width; el.style.width = "0"; requestAnimationFrame(() => requestAnimationFrame(() => (el.style.width = w))); }), 30);
+
+    // المخطط
+    T.barChart($("#chart"), S.l14.map((d, i) => ({ ...d, v: d.pg, today: i === 13 })), {
+      color: "#8b5cf6",
+      label: (d) => (d.today ? "اليوم" : d.date.getDate() + "/" + (d.date.getMonth() + 1)),
+      tip: (d) => `<b>${T.fmtShort(d.date)}</b> · ${d.pg} صفحة${d.mn ? ` · ${d.mn} د` : ""}${d.dq ? ` · ${fmtL(d.dq / 4)} درس` : ""}`,
+    });
+    const maxP = Math.max(1, ...Object.values(S.perSubjPages));
+    $("#dist").innerHTML = T.SUBJECTS.map((s) => `<div class="hbar-row"><span>${s.icon} ${s.short}</span>
+      <div class="bar" style="--c:${s.color};height:14px"><i style="width:${(S.perSubjPages[s.id] / maxP) * 100}%"></i></div>
+      <b style="text-align:left">${S.perSubjPages[s.id]} <span class="small muted">ص</span></b></div>`).join("") +
+      `<div class="small dim mt">نسبة إنجاز الفصل الأول لكل مادة:</div>` +
+      T.SUBJECTS.map((s) => { const a = T.semInfo(st, s.id, "s1"); return `<div class="hbar-row"><span>${s.icon} ${s.short}</span>
+      <div class="bar" style="--c:${s.color};height:14px"><i style="width:${a.pct}%"></i></div><b style="text-align:left">${Math.round(a.pct)}%</b></div>`; }).join("");
+
+    // السجل
+    const log = st.log.slice().reverse().slice(0, 40);
+    $("#log").innerHTML = log.length ? log.map((e, i) => {
+      const s = T.SUBJ[e.s] || {}, ls = (e.ls || []).map((x) => x + 1), isNew = e.t > prevSeen;
+      return `<div class="tl" style="--c:${s.color};animation-delay:${Math.min(i, 10) * 50}ms"><div class="when">${T.fmtShort(e.t)} · ${T.fmtTime(e.t)} · ${T.relTime(e.t)}${isNew ? '<span class="new-tag">جديد</span>' : ""}</div>
+        <b>${s.icon || ""} ${s.name || ""}</b>${e.pg ? ` — <b>${e.pg}</b> صفحة` : ""}${e.mn ? ` · ${e.mn} دقيقة` : ""}${!e.pg && e.dq > 0 ? ` — تقدّم ${e.dq * 25}% بالدروس` : ""}
+        ${ls.length ? `<div class="small" style="color:#6ee7b7">✓ خلّص الدرس ${ls.join("، ")}</div>` : ""}
+        ${e.note ? `<div class="small muted">📝 ${T.esc(e.note)}</div>` : ""}</div>`;
+    }).join("") : `<div class="empty"><span class="e">🌱</span>لسا نورس ما سجّل ولا إنجاز — أول ما يسجل رح يظهر هون فوراً</div>`;
+
+    $("#badges").innerHTML = T.badges(st).map((b) => `<div class="bdg ${b.ok ? "ok" : ""}" title="${b.desc}"><span class="e">${b.icon}</span><b>${b.title}</b><small>${b.desc}</small></div>`).join("");
+
+    T.animateRings(); T.reveal();
+    firstRender = false;
+  }
+
+  /* ---------- إنجاز جديد وصل ---------- */
+  function checkNew(src) {
+    const last = st.log[st.log.length - 1];
+    if (!last) return;
+    if (last.t > prevSeen && booted && src === "remote") {
+      const s = T.SUBJ[last.s] || {};
+      const txt = `${T.CFG.studentName} ${last.pg ? `أنجز ${last.pg} صفحة ${s.name}` : `تقدّم في ${s.name}`}${(last.ls || []).length ? ` وخلّص ${(last.ls || []).length} درس ✅` : ""}`;
+      T.toast("🎉 إنجاز جديد: " + txt);
+      T.confetti(); if (soundOn()) T.chime();
+      $("#todayCard").animate([{ transform: "scale(1)" }, { transform: "scale(1.03)", boxShadow: "0 0 60px -10px #ec4899" }, { transform: "scale(1)" }], { duration: 1200, easing: "ease-out" });
+      if ("Notification" in window && Notification.permission === "granted") {
+        try { new Notification("إنجاز جديد من نورس 🎉", { body: txt, icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>", tag: "tj-" + last.t }); } catch {}
+      }
+    }
+    setTimeout(() => { prevSeen = Math.max(prevSeen, last.t); localStorage.setItem(SEEN, prevSeen); }, 8000);
+  }
+
+  function setStatus(ok, mode) {
+    const label = mode === "firebase" ? "قاعدة البيانات" : mode === "ntfy" ? "مزامنة سحابية" : "محلي";
+    $("#sync").innerHTML = `<i class="dot ${ok ? "on" : "off"}"></i><span>${ok ? "متصل مباشر" : "غير متصل"} · ${label}</span>`;
+  }
+
+  /* ---------- الرسائل ---------- */
+  const sent = [];
+  function addSent(m) {
+    if (sent.some((x) => x.id === m.id)) return;
+    sent.push(m); sent.sort((a, b) => b.t - a.t);
+    $("#sent").innerHTML = `<div class="small dim">رسائلك السابقة:</div>` + sent.slice(0, 20).map((x) => `<div class="msg"><div>${T.esc(x.text)}</div><div class="when">${T.relTime(x.t)}</div></div>`).join("");
+  }
+  const QUICK = ["الله يوفقك يا بطل 💪", "فخور فيك يا نورس ❤️", "كمّل هيك، ما شاء الله عليك 🌟", "لا تنسى ترتاح شوي وتشرب مي 💧", "اللهم وفّق نورس وافتح عليه 🤲", "يلا يا بطل، بدنا إنجاز اليوم 📚"];
+  $("#quick").innerHTML = QUICK.map((q) => `<button class="chip" data-q="${q}">${q}</button>`).join("");
+  $$("#quick .chip").forEach((c) => c.addEventListener("click", () => { $("#msgText").value = c.dataset.q; $("#msgText").focus(); }));
+  $("#sendMsg").addEventListener("click", async () => {
+    const t = $("#msgText").value.trim(); if (!t) { T.toast("اكتب رسالة أولاً 🙂", "warn"); return; }
+    $("#sendMsg").disabled = true;
+    const ok = await T.Store.sendToNawras(t);
+    $("#sendMsg").disabled = false;
+    if (ok) { $("#msgText").value = ""; T.toast("💌 وصلت رسالتك لنورس"); }
+    else T.toast("⚠️ ما انبعثت الرسالة، تأكد من الإنترنت", "warn");
+  });
+
+  /* ---------- الإشعارات ---------- */
+  function drawNotif() {
+    const p = "Notification" in window ? Notification.permission : "unsupported";
+    const b = $("#enableNotif");
+    b.textContent = p === "granted" ? "✅ الإشعارات مفعّلة" : p === "denied" ? "🚫 الإشعارات محظورة من إعدادات المتصفح" : p === "unsupported" ? "المتصفح لا يدعم الإشعارات" : "🔔 تفعيل إشعارات المتصفح";
+    b.disabled = p !== "default";
+    $("#soundBtn").textContent = soundOn() ? "🔊 صوت عند الإنجاز: مفعّل" : "🔇 الصوت مطفي";
+    $("#soundBtn").classList.toggle("on", soundOn());
+  }
+  $("#enableNotif").addEventListener("click", async () => {
+    try { const r = await Notification.requestPermission(); if (r === "granted") new Notification("تم التفعيل ✅", { body: "رح يوصلك إشعار كل ما نورس يسجل إنجاز" }); } catch {}
+    drawNotif();
+  });
+  $("#soundBtn").addEventListener("click", () => { localStorage.setItem("tj_dad_sound", soundOn() ? "0" : "1"); drawNotif(); if (soundOn()) T.chime(); });
+  $("#ntfyLink").href = T.Store.notifyTopicUrl();
+  drawNotif();
+
+  T.Store.init({
+    role: "dad",
+    onState: (s, src) => { st = s; render(); checkNew(src); },
+    onMsg: (m) => addSent(m),
+    onStatus: setStatus,
+  });
+  render();
+  setTimeout(() => { booted = true; }, 2500);
+  setInterval(() => { $("#lastUpd").textContent = "آخر تحديث من نورس: " + T.relTime(st.ts); }, 30000);
+  // تحديث احتياطي كل دقيقتين في حال انقطع الاتصال المباشر
+  setInterval(() => { if (document.visibilityState === "visible" && !T.Store.online) location.reload(); }, 120000);
+})();
+</script>
+</body>
+</html>

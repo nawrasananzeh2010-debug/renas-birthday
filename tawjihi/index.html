@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#07061a">
+  <title>توجيهي نورس 2027 — لوحة الإنجاز</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <!-- الشريط العلوي -->
+  <header class="top reveal">
+    <div class="brand">
+      <div class="logo">🎓</div>
+      <div><b>توجيهي نورس 2027</b><span>لوحة الإنجاز اليومي</span></div>
+    </div>
+    <div class="row">
+      <span class="pill" id="sync"><i class="dot"></i><span>جارِ الاتصال…</span></span>
+      <button class="btn ghost sm" id="openSettings" aria-label="الإعدادات">⚙️</button>
+    </div>
+  </header>
+
+  <!-- البطل + العد التنازلي -->
+  <section class="card hero reveal d1">
+    <div>
+      <div class="hello">أهلاً يا <span class="grad">نورس</span> 👋</div>
+      <div class="today-date" id="todayDate"></div>
+      <div class="quote mt muted" id="quote" style="font-weight:700"></div>
+      <div class="dua" id="dua"></div>
+    </div>
+    <div>
+      <div class="cd-title">⏳ باقي على امتحانات التوجيهي</div>
+      <div class="cd" id="cd">
+        <div><b data-cd="d">0</b><span>يوم</span></div>
+        <div><b data-cd="h">00</b><span>ساعة</span></div>
+        <div><b data-cd="m">00</b><span>دقيقة</span></div>
+        <div><b data-cd="s">00</b><span>ثانية</span></div>
+      </div>
+      <div class="cd-date" id="examDate"></div>
+    </div>
+  </section>
+
+  <!-- نظرة عامة -->
+  <h2 class="sec-title reveal">📊 إنجازي بالأرقام</h2>
+  <div class="grid g2">
+    <div class="card reveal ovw">
+      <div class="ring-box big-ring" id="bigRing"></div>
+      <div class="grid" style="gap:12px">
+        <div class="stat"><span class="k">📘 إنجاز الفصل الأول كامل</span><span class="v"><span id="s1pct">0</span><small>%</small></span><span class="s" id="s1sub"></span></div>
+        <div class="bar"><i id="s1bar"></i></div>
+        <div class="stat"><span class="k">📗 إنجاز الفصل الثاني</span><span class="v" id="s2v"></span><span class="s" id="s2sub"></span></div>
+      </div>
+    </div>
+    <div class="grid" style="gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))">
+      <div class="card reveal d1 stat"><span class="k">🎓 التوجيهي بالكامل</span><span class="v"><span id="allpct">0</span><small>%</small></span><span class="s" id="allsub"></span></div>
+      <div class="card reveal d2 stat"><span class="k">🔥 أيام متواصلة</span><span class="v"><span id="streak">0</span><small> يوم</small></span><span class="s" id="beststreak"></span></div>
+      <div class="card reveal d3 stat"><span class="k">📄 صفحات اليوم</span><span class="v"><span id="todayPg">0</span><small id="goalTxt"></small></span><div class="bar mt" style="margin-top:6px"><i id="goalBar" style="--c:#fbbf24"></i></div></div>
+      <div class="card reveal d4 stat"><span class="k">🎯 المطلوب يومياً</span><span class="v"><span id="req">0</span><small> درس</small></span><span class="s">حتى تخلّص قبل الامتحان بشهر للمراجعة</span></div>
+    </div>
+  </div>
+
+  <!-- المواد -->
+  <h2 class="sec-title reveal">📚 موادي <span class="small dim" style="font-weight:600">(اضغط على المادة لتشوف الدروس)</span></h2>
+  <div class="grid g4" id="subjects"></div>
+
+  <!-- آخر 14 يوم + رسائل الأب -->
+  <div class="grid g2 mt2">
+    <div class="card reveal">
+      <h3>📈 صفحاتي آخر 14 يوم</h3>
+      <div id="chart" class="mt"></div>
+    </div>
+    <div class="card reveal d1">
+      <h3>💌 رسائل من أبوي</h3>
+      <div id="msgs" class="mt" style="max-height:300px;overflow:auto"></div>
+    </div>
+  </div>
+
+  <!-- السجل + الأوسمة -->
+  <div class="grid g2 mt2">
+    <div class="card reveal">
+      <h3>🕒 آخر إنجازاتي</h3>
+      <div class="timeline mt" id="log" style="max-height:420px;overflow:auto"></div>
+    </div>
+    <div class="card reveal d1">
+      <h3>🏅 أوسمتي</h3>
+      <div class="badges mt" id="badges"></div>
+    </div>
+  </div>
+
+  <div class="foot">صُنع بحب لنورس 💜 — كل إنجاز بتسجله بيوصل لأبوك فوراً</div>
+</div>
+
+<button class="btn fab" id="openLog">✍️ سجّل إنجاز اليوم</button>
+
+<!-- نافذة تسجيل الإنجاز -->
+<div class="modal" id="logModal">
+  <div class="shade" data-close></div>
+  <div class="box">
+    <button class="x" data-close>✕</button>
+    <h2>✍️ سجّل إنجازك</h2>
+    <div class="muted small">اختار المادة، حط عدد الصفحات، واضغط على الدروس اللي اشتغلت عليها</div>
+
+    <label class="lbl">المادة</label>
+    <div class="chips" id="lSubj"></div>
+
+    <label class="lbl">الفصل</label>
+    <div class="chips" id="lSem"></div>
+
+    <div class="grid g2" style="gap:12px">
+      <div>
+        <label class="lbl">📄 عدد الصفحات اللي خلصتها</label>
+        <div class="stepper"><button type="button" data-step="pg:-1">−</button><input id="lPg" type="number" min="0" value="0" inputmode="numeric"><button type="button" data-step="pg:1">+</button></div>
+      </div>
+      <div>
+        <label class="lbl">⏱️ وقت الدراسة (دقيقة)</label>
+        <div class="stepper"><button type="button" data-step="mn:-15">−</button><input id="lMn" type="number" min="0" value="0" step="15" inputmode="numeric"><button type="button" data-step="mn:15">+</button></div>
+      </div>
+    </div>
+
+    <label class="lbl">📖 الدروس — كل ضغطة بتزيد ربع (25% ← 50% ← 75% ← ✓ خلص)</label>
+    <div class="legend"><span><i style="background:rgba(255,255,255,.05)"></i>ما بلّشت</span><span><i style="background:linear-gradient(0deg,#8b5cf6 50%,transparent 50%)"></i>بنص الدرس</span><span><i style="background:#8b5cf6"></i>خلص ✓</span></div>
+    <div id="lLessons"></div>
+
+    <label class="lbl">📝 ملاحظة لأبوك (اختياري)</label>
+    <textarea id="lNote" rows="2" maxlength="140" placeholder="مثلاً: حليت أسئلة الوحدة كاملة 💪"></textarea>
+
+    <div class="row mt" style="justify-content:space-between">
+      <span class="small muted" id="lSummary"></span>
+      <button class="btn green" id="lSubmit">🚀 أرسل الإنجاز</button>
+    </div>
+  </div>
+</div>
+
+<!-- نافذة المادة -->
+<div class="modal" id="subjModal">
+  <div class="shade" data-close></div>
+  <div class="box">
+    <button class="x" data-close>✕</button>
+    <div id="smBody"></div>
+  </div>
+</div>
+
+<!-- نافذة الإعدادات -->
+<div class="modal" id="setModal">
+  <div class="shade" data-close></div>
+  <div class="box">
+    <button class="x" data-close>✕</button>
+    <h2>⚙️ الإعدادات</h2>
+    <div class="muted small">لما ينزل الفصل الثاني، اكتب عدد دروس كل وحدة مفصولة بفاصلة (مثلاً: 5,4,4)</div>
+    <div id="setSubj"></div>
+    <label class="lbl">🎯 هدفي اليومي (صفحات)</label>
+    <input id="setGoal" type="number" min="1">
+    <label class="lbl">🔊 الأصوات</label>
+    <div class="chips"><button class="chip" id="setSound"></button></div>
+    <div class="hr"></div>
+    <h3>🔗 الروابط</h3>
+    <div class="small muted mt">رابط صفحة أبوك (ابعثله إياه مرة وحدة):</div>
+    <div class="row mt"><input id="dadLink" readonly style="direction:ltr;text-align:left"><button class="btn sm" id="copyDad">نسخ</button></div>
+    <div class="small muted mt">بدك يوصلك إشعار لما أبوك يبعثلك رسالة؟ افتح هالرابط واضغط Subscribe:</div>
+    <div class="mt"><a id="myTopic" target="_blank" rel="noopener"></a></div>
+    <div class="hr"></div>
+    <h3>💾 نسخة احتياطية</h3>
+    <div class="row mt">
+      <button class="btn ghost sm" id="exportBtn">⬇️ تنزيل نسخة</button>
+      <label class="btn ghost sm" style="cursor:pointer">⬆️ استرجاع نسخة<input type="file" id="importFile" accept="application/json" hidden></label>
+    </div>
+    <div class="small dim mt" id="syncInfo"></div>
+    <div class="row mt" style="justify-content:flex-end"><button class="btn" id="setSave">💾 حفظ</button></div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="core.js"></script>
+<script>
+(() => {
+  const T = TJ, $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  let st = T.loadLocal();
+  let firstRender = true;
+  const soundOn = () => localStorage.getItem("tj_sound") !== "0";
+
+  /* ---------- أساسيات ---------- */
+  T.starfield();
+  $("#todayDate").textContent = "📅 " + T.fmtDate(new Date());
+  $("#examDate").textContent = "موعد الامتحانات المتوقع: " + T.fmtDate(T.EXAM);
+  T.countdown($("#cd"));
+  T.rotator($("#dua"), T.DUAS, 9000);
+  T.rotator($("#quote"), T.QUOTES, 7000);
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest(".btn"); if (!b) return;
+    const r = b.getBoundingClientRect(), s = document.createElement("span"), d = Math.max(r.width, r.height);
+    s.className = "rip"; s.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX - r.left - d / 2}px;top:${e.clientY - r.top - d / 2}px`;
+    b.appendChild(s); setTimeout(() => s.remove(), 650);
+  });
+
+  /* ---------- النوافذ ---------- */
+  const openM = (id) => { $(id).classList.add("open"); document.body.style.overflow = "hidden"; };
+  const closeM = (id) => { $(id).classList.remove("open"); document.body.style.overflow = ""; $(id).dispatchEvent(new Event("closed")); };
+  $$(".modal").forEach((m) => m.addEventListener("click", (e) => { if (e.target.closest("[data-close]")) closeM("#" + m.id); }));
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") $$(".modal.open").forEach((m) => closeM("#" + m.id)); });
+
+  /* ---------- العرض ---------- */
+  function render() {
+    const S = T.stats(st);
+    $("#bigRing").innerHTML = T.ring(S.s1.pct, { size: 170, stroke: 14, color: "#8b5cf6", color2: "#ec4899", id: "big" }) +
+      `<div class="ring-label"><div><b>${Math.round(S.s1.pct)}%</b><small>الفصل الأول</small></div></div>`;
+    T.countUp($("#s1pct"), S.s1.pct, { dec: 1 });
+    $("#s1sub").textContent = `خلصت ${S.s1.done} درس من ${S.s1.n} (+ أجزاء من دروس)`;
+    $("#s1bar").style.width = S.s1.pct + "%";
+    if (S.s2.released) { $("#s2v").innerHTML = `<span>${S.s2.pct.toFixed(1)}</span><small>%</small>`; $("#s2sub").textContent = `${S.s2.done} من ${S.s2.n} درس`; }
+    else { $("#s2v").innerHTML = `<span class="badge-soon" style="font-size:.9rem">⏳ لم ينزل بعد</span>`; $("#s2sub").textContent = "ولا مادة فصل ثاني نزلت لحد الآن — بتضيفها من الإعدادات"; }
+    T.countUp($("#allpct"), S.all.pct, { dec: 1 });
+    $("#allsub").textContent = S.s2.released ? `${S.all.done} من ${S.all.n} درس` : "من المنهاج اللي نزل لحد الآن (الفصل الأول)";
+    T.countUp($("#streak"), S.streak);
+    $("#beststreak").textContent = `أطول سلسلة: ${S.bestStreak} يوم`;
+    T.countUp($("#todayPg"), S.today.pg || 0);
+    $("#goalTxt").textContent = ` / ${st.goal} صفحة`;
+    $("#goalBar").style.width = Math.min(100, ((S.today.pg || 0) / st.goal) * 100) + "%";
+    T.countUp($("#req"), S.required, { dec: 2 });
+
+    // المواد
+    $("#subjects").innerHTML = T.SUBJECTS.map((s, i) => {
+      const a = T.semInfo(st, s.id, "s1"), b = T.semInfo(st, s.id, "s2"), t = T.subjectTotal(st, s.id);
+      return `<div class="card hover subj ${firstRender ? `reveal d${(i % 4) + 1}` : ""}" style="--c:${s.color}" data-subj="${s.id}">
+        <div class="glow"></div>
+        <div class="head"><div class="ico">${s.icon}</div><div class="grow"><h3>${s.name}</h3>
+          <div class="small muted">${a.n} درس · ${st.cur[s.id].s1.length} وحدات</div></div>
+          <div class="ring-box">${T.ring(a.pct, { size: 64, stroke: 7, color: s.color, id: "r" + s.id })}<div class="ring-label"><b style="font-size:.9rem">${Math.round(a.pct)}%</b></div></div>
+        </div>
+        <div class="sems">
+          <div class="sem"><div class="t">الفصل الأول</div><div class="n">${a.done}/${a.n} <span class="small muted">درس</span></div></div>
+          <div class="sem"><div class="t">الفصل الثاني</div><div class="n">${b.released ? `${b.done}/${b.n}` : '<span class="badge-soon">لم ينزل</span>'}</div></div>
+        </div>
+        <div class="bar mt" style="--c:${s.color}"><i style="width:${t.pct}%"></i></div>
+        <div class="small muted" style="margin-top:6px">المادة كاملة: ${t.pct.toFixed(1)}%</div>
+      </div>`;
+    }).join("");
+    $$("#subjects .subj").forEach((el) => el.addEventListener("click", () => openSubject(el.dataset.subj)));
+
+    // المخطط
+    T.barChart($("#chart"), S.l14.map((d, i) => ({ ...d, v: d.pg, today: i === 13 })), {
+      color: "#8b5cf6",
+      label: (d) => (d.today ? "اليوم" : d.date.getDate() + "/" + (d.date.getMonth() + 1)),
+      tip: (d) => `<b>${T.fmtShort(d.date)}</b> · ${d.pg} صفحة${d.dq ? ` · ${(d.dq / 4).toFixed(2).replace(/\.?0+$/, "")} درس` : ""}`,
+    });
+
+    // السجل
+    const log = st.log.slice().reverse().slice(0, 30);
+    $("#log").innerHTML = log.length ? log.map((e) => {
+      const s = T.SUBJ[e.s] || {};
+      const ls = (e.ls || []).map((x) => x + 1);
+      return `<div class="tl" style="--c:${s.color}"><div class="when">${T.fmtShort(e.t)} · ${T.fmtTime(e.t)}</div>
+        <b>${s.icon || ""} ${s.name || ""}</b> — ${e.pg ? `${e.pg} صفحة` : ""}${e.mn ? ` · ${e.mn} دقيقة` : ""}
+        ${ls.length ? `<div class="small" style="color:#6ee7b7">✓ خلّصت الدرس ${ls.join("، ")}</div>` : ""}
+        ${e.note ? `<div class="small muted">📝 ${T.esc(e.note)}</div>` : ""}</div>`;
+    }).join("") : `<div class="empty"><span class="e">🌱</span>لسا ما سجلت ولا إنجاز — يلا أول خطوة!</div>`;
+
+    // الأوسمة
+    $("#badges").innerHTML = T.badges(st).map((b) => `<div class="bdg ${b.ok ? "ok" : ""}" title="${b.desc}"><span class="e">${b.icon}</span><b>${b.title}</b><small>${b.desc}</small></div>`).join("");
+
+    T.animateRings(); T.reveal();
+    firstRender = false;
+  }
+
+  /* ---------- رسائل الأب ---------- */
+  const msgList = [];
+  function addMsg(m, initial) {
+    if (msgList.some((x) => x.id === m.id)) return;
+    msgList.push(m); msgList.sort((a, b) => b.t - a.t);
+    $("#msgs").innerHTML = msgList.map((x) => `<div class="msg ${x === m && !initial ? "new" : ""}"><div>${T.esc(x.text)}</div><div class="when">❤️ أبوك · ${T.relTime(x.t)}</div></div>`).join("");
+    if (!initial) { T.toast("💌 وصلتك رسالة من أبوك: " + T.esc(m.text)); if (soundOn()) T.chime("msg"); }
+  }
+  $("#msgs").innerHTML = `<div class="empty"><span class="e">💌</span>رسائل أبوك وتشجيعه رح تظهر هون</div>`;
+
+  /* ---------- حالة الاتصال ---------- */
+  function setStatus(ok, mode) {
+    const label = mode === "firebase" ? "قاعدة البيانات" : mode === "ntfy" ? "مزامنة سحابية" : "محلي";
+    $("#sync").innerHTML = `<i class="dot ${ok ? "on" : "off"}"></i><span>${ok ? "متصل" : "غير متصل"} · ${label}</span>`;
+    $("#syncInfo").textContent = mode === "firebase" ? "✅ البيانات محفوظة في قاعدة بيانات Firebase وتتزامن لحظياً مع صفحة أبوك."
+      : "ℹ️ المزامنة الحالية عبر ntfy.sh (تشتغل بدون إعداد). للحفظ الدائم في قاعدة بيانات، فعّل Firebase حسب ملف README.";
+  }
+
+  T.Store.init({
+    role: "student",
+    onState: (s) => { st = s; render(); },
+    onMsg: addMsg,
+    onStatus: setStatus,
+  });
+
+  /* ---------- نافذة المادة ---------- */
+  let smChanged = null;
+  function lessonTiles(sid, sem, prog, { ro = false, base = null } = {}) {
+    const s = T.SUBJ[sid], units = st.cur[sid][sem];
+    if (!units.length) return `<div class="empty"><span class="e">⏳</span>الفصل الثاني لهاي المادة لم ينزل بعد<br><span class="small">لما ينزل ضيف عدد الدروس من ⚙️ الإعدادات</span></div>`;
+    let idx = 0;
+    return units.map((n, u) => {
+      const seg = prog.slice(idx, idx + n);
+      const done = [...seg].filter((c) => c === "4").length;
+      const html = `<div class="unit"><div class="unit-h"><b>الوحدة ${u + 1}</b><span>${done}/${n} ✓</span></div><div class="lessons">` +
+        Array.from({ length: n }, (_, k) => {
+          const i = idx + k, lv = +prog[i], changed = base && base[i] !== prog[i];
+          return `<button type="button" class="lesson ${lv === 4 ? "done" : ""} ${ro ? "ro" : ""}" style="--c:${s.color};--p:${lv * 25}%;${changed ? "border-color:#fff;border-style:dashed" : ""}" data-i="${i}">
+            <div class="fill"></div><span>${i + 1}<small>${lv ? lv * 25 + "%" : "درس"}</small></span></button>`;
+        }).join("") + `</div></div>`;
+      idx += n; return html;
+    }).join("");
+  }
+
+  function openSubject(sid, sem = "s1") {
+    const s = T.SUBJ[sid];
+    if (!smChanged || smChanged.sid !== sid) smChanged = { sid, before: { s1: st.p[sid].s1, s2: st.p[sid].s2 } };
+    const a = T.semInfo(st, sid, sem);
+    $("#smBody").innerHTML = `<div class="row"><div class="logo" style="background:${s.color}">${s.icon}</div><div><h2>${s.name}</h2>
+        <div class="muted small">اضغط على أي درس لتحدّث نسبة إنجازه</div></div></div>
+      <div class="chips mt">${["s1", "s2"].map((x) => `<button class="chip ${x === sem ? "on" : ""}" style="--c:${s.color}" data-sem="${x}">${x === "s1" ? "الفصل الأول" : "الفصل الثاني"}${T.semInfo(st, sid, x).released ? "" : " ⏳"}</button>`).join("")}</div>
+      ${a.released ? `<div class="row mt"><div class="grow"><div class="bar" style="--c:${s.color}"><i style="width:${a.pct}%"></i></div></div><b>${a.pct.toFixed(1)}%</b></div>
+        <div class="small muted" style="margin-top:4px">خلصت ${a.done} من ${a.n} درس</div>` : ""}
+      <div id="smTiles">${lessonTiles(sid, sem, st.p[sid][sem])}</div>`;
+    $$("[data-sem]", $("#smBody")).forEach((b) => b.addEventListener("click", () => openSubject(sid, b.dataset.sem)));
+    $$("#smTiles .lesson").forEach((b) => b.addEventListener("click", () => {
+      const i = +b.dataset.i, arr = st.p[sid][sem].split("");
+      arr[i] = String((+arr[i] + 1) % 5); st.p[sid][sem] = arr.join("");
+      T.Store.save(st);
+      openSubject(sid, sem);
+      const nb = $(`#smTiles .lesson[data-i="${i}"]`); nb && nb.classList.add("pop");
+      if (arr[i] === "4") { if (soundOn()) T.chime(); }
+      render();
+    }));
+    openM("#subjModal");
+  }
+  $("#subjModal").addEventListener("closed", async () => {
+    if (!smChanged) return;
+    const { sid, before } = smChanged; smChanged = null;
+    let dq = 0; const ls = [];
+    ["s1", "s2"].forEach((sem) => {
+      const now = st.p[sid][sem], b = before[sem] || "";
+      for (let i = 0; i < now.length; i++) { const d = (+now[i]) - (+b[i] || 0); dq += d; if (now[i] === "4" && b[i] !== "4" && sem === "s1") ls.push(i); }
+    });
+    if (!dq) return;
+    const k = T.dayKey(); st.days[k] = st.days[k] || { pg: 0, mn: 0, dq: 0 };
+    st.days[k].dq = Math.max(0, (st.days[k].dq || 0) + dq);
+    st.log.push({ t: Date.now(), s: sid, sem: "s1", pg: 0, mn: 0, dq, ls, note: dq < 0 ? "تعديل على نسب الدروس" : "" });
+    T.Store.save(st); await T.Store.flush(st); render();
+    if (dq > 0) sendDad(sid, 0, 0, ls, "", dq);
+  });
+
+  /* ---------- نافذة تسجيل الإنجاز ---------- */
+  const draft = { sid: "is", sem: "s1", prog: "", base: "" };
+  function drawLog() {
+    $("#lSubj").innerHTML = T.SUBJECTS.map((s) => `<button class="chip ${s.id === draft.sid ? "on" : ""}" style="--c:${s.color}" data-s="${s.id}">${s.icon} ${s.name}</button>`).join("");
+    $("#lSem").innerHTML = ["s1", "s2"].map((x) => { const r = T.semInfo(st, draft.sid, x).released;
+      return `<button class="chip ${x === draft.sem ? "on" : ""}" data-sm="${x}" ${r ? "" : "disabled"}>${x === "s1" ? "الفصل الأول" : "الفصل الثاني"}${r ? "" : " (لم ينزل)"}</button>`; }).join("");
+    $("#lLessons").innerHTML = lessonTiles(draft.sid, draft.sem, draft.prog, { base: draft.base });
+    $$("#lSubj .chip").forEach((b) => b.addEventListener("click", () => { draft.sid = b.dataset.s; draft.sem = "s1"; resetDraft(); drawLog(); }));
+    $$("#lSem .chip").forEach((b) => b.addEventListener("click", () => { draft.sem = b.dataset.sm; resetDraft(); drawLog(); }));
+    $$("#lLessons .lesson").forEach((b) => b.addEventListener("click", () => {
+      const i = +b.dataset.i, arr = draft.prog.split("");
+      arr[i] = String((+arr[i] + 1) % 5); draft.prog = arr.join(""); drawLog();
+      const nb = $(`#lLessons .lesson[data-i="${i}"]`); nb && nb.classList.add("pop");
+    }));
+    summary();
+  }
+  const resetDraft = () => { draft.prog = draft.base = st.p[draft.sid][draft.sem]; };
+  function diff() {
+    let dq = 0; const ls = [];
+    for (let i = 0; i < draft.prog.length; i++) { dq += (+draft.prog[i]) - (+draft.base[i]); if (draft.prog[i] === "4" && draft.base[i] !== "4") ls.push(i); }
+    return { dq, ls };
+  }
+  function summary() {
+    const pg = +$("#lPg").value || 0, mn = +$("#lMn").value || 0, { dq, ls } = diff();
+    const parts = [];
+    if (pg) parts.push(`${pg} صفحة`); if (mn) parts.push(`${mn} دقيقة`);
+    if (ls.length) parts.push(`خلّصت ${ls.length} درس`); else if (dq > 0) parts.push(`تقدم ${dq * 25}% بالدروس`);
+    $("#lSummary").textContent = parts.length ? "📦 " + parts.join(" · ") : "";
+  }
+  $$("[data-step]").forEach((b) => b.addEventListener("click", () => {
+    const [f, d] = b.dataset.step.split(":"); const el = f === "pg" ? $("#lPg") : $("#lMn");
+    el.value = Math.max(0, (+el.value || 0) + +d); summary();
+  }));
+  ["#lPg", "#lMn"].forEach((s) => $(s).addEventListener("input", summary));
+  $("#openLog").addEventListener("click", () => {
+    $("#lPg").value = 0; $("#lMn").value = 0; $("#lNote").value = "";
+    resetDraft(); drawLog(); openM("#logModal");
+  });
+
+  async function sendDad(sid, pg, mn, ls, note, dq) {
+    const s = T.SUBJ[sid], S = T.stats(st);
+    let body = `📚 ${T.CFG.studentName} `;
+    const bits = [];
+    if (pg) bits.push(`أنجز ${pg} صفحة ${s.name}`);
+    if (ls.length) bits.push(`خلّص الدرس ${ls.map((x) => x + 1).join(" و ")} ✅`);
+    else if (dq > 0 && !pg) bits.push(`تقدّم في دروس ${s.name}`);
+    if (mn) bits.push(`ودرس ${mn} دقيقة`);
+    body += bits.join(" و") + ".";
+    body += `\n📘 الفصل الأول: ${S.s1.pct.toFixed(1)}% · اليوم: ${S.today.pg || 0} صفحة`;
+    if (S.streak > 1) body += ` · 🔥 ${S.streak} أيام ورا بعض`;
+    if (note) body += `\n📝 ${note}`;
+    const ok = await T.Store.notifyDad(`إنجاز جديد من ${T.CFG.studentName} 🎉`, body, ["tada", "books"]);
+    T.toast(ok ? "✅ وصل إنجازك لأبوك!" : "⚠️ انحفظ إنجازك، بس الإشعار ما انبعث (تأكد من الإنترنت)", ok ? "ok" : "warn");
+  }
+
+  $("#lSubmit").addEventListener("click", async () => {
+    const pg = Math.max(0, +$("#lPg").value || 0), mn = Math.max(0, +$("#lMn").value || 0), note = $("#lNote").value.trim();
+    const { dq, ls } = diff();
+    if (!pg && !mn && !dq) { T.toast("حط عدد الصفحات أو اضغط على درس 🙂", "warn"); return; }
+    const before = T.stats(st);
+    st.p[draft.sid][draft.sem] = draft.prog;
+    const k = T.dayKey(); st.days[k] = st.days[k] || { pg: 0, mn: 0, dq: 0 };
+    st.days[k].pg = (st.days[k].pg || 0) + pg; st.days[k].mn = (st.days[k].mn || 0) + mn;
+    st.days[k].dq = Math.max(0, (st.days[k].dq || 0) + dq);
+    st.log.push({ t: Date.now(), s: draft.sid, sem: draft.sem, pg, mn, dq, ls, note });
+    $("#lSubmit").disabled = true;
+    T.Store.save(st); render(); closeM("#logModal");
+    T.confetti(); if (soundOn()) T.chime();
+    const after = T.stats(st);
+    [25, 50, 75, 100].forEach((m) => { if (before.s1.pct < m && after.s1.pct >= m) setTimeout(() => { T.confetti(260); T.toast(`🏆 مبروك! وصلت ${m}% من الفصل الأول`); }, 900); });
+    await T.Store.flush(st);
+    await sendDad(draft.sid, pg, mn, ls, note, dq);
+    $("#lSubmit").disabled = false;
+  });
+
+  /* ---------- الإعدادات ---------- */
+  function drawSettings() {
+    $("#setSubj").innerHTML = T.SUBJECTS.map((s) => `<div class="card mt" style="padding:14px;--c:${s.color}">
+      <b>${s.icon} ${s.name}</b>
+      <div class="grid g2" style="gap:10px;grid-template-columns:1fr 1fr">
+        <div><label class="lbl">الفصل الأول (دروس كل وحدة)</label><input data-u="${s.id}:s1" value="${st.cur[s.id].s1.join(",")}" style="direction:ltr;text-align:center"></div>
+        <div><label class="lbl">الفصل الثاني (فاضي = لم ينزل)</label><input data-u="${s.id}:s2" value="${st.cur[s.id].s2.join(",")}" placeholder="لم ينزل بعد" style="direction:ltr;text-align:center"></div>
+      </div></div>`).join("");
+    $("#setGoal").value = st.goal;
+    $("#setSound").textContent = soundOn() ? "🔊 مفعّلة" : "🔇 مطفية";
+    $("#setSound").classList.toggle("on", soundOn());
+    $("#dadLink").value = new URL("dad.html", location.href).href;
+    $("#myTopic").href = $("#myTopic").textContent = T.Store.nawrasTopicUrl();
+  }
+  $("#openSettings").addEventListener("click", () => { drawSettings(); openM("#setModal"); });
+  $("#setSound").addEventListener("click", () => { localStorage.setItem("tj_sound", soundOn() ? "0" : "1"); drawSettings(); });
+  $("#copyDad").addEventListener("click", async () => { try { await navigator.clipboard.writeText($("#dadLink").value); T.toast("📋 انتسخ الرابط"); } catch { $("#dadLink").select(); } });
+  $("#setSave").addEventListener("click", () => {
+    $$("[data-u]").forEach((inp) => {
+      const [sid, sem] = inp.dataset.u.split(":");
+      st.cur[sid][sem] = inp.value.split(/[,،\s]+/).map((x) => parseInt(x)).filter((x) => x > 0 && x < 100);
+    });
+    st.goal = Math.max(1, +$("#setGoal").value || 10);
+    st = T.normalize(st); T.Store.save(st); render(); closeM("#setModal"); T.toast("✅ انحفظت الإعدادات");
+  });
+  $("#exportBtn").addEventListener("click", () => {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(st, null, 1)], { type: "application/json" }));
+    a.download = `tawjihi-nawras-${T.dayKey()}.json`; a.click();
+  });
+  $("#importFile").addEventListener("change", async (e) => {
+    const f = e.target.files[0]; if (!f) return;
+    try { st = T.normalize(JSON.parse(await f.text())); T.Store.save(st); render(); T.toast("✅ رجعت النسخة"); closeM("#setModal"); }
+    catch { T.toast("الملف مش صالح", "warn"); }
+  });
+
+  render();
+  setInterval(() => { $("#todayDate").textContent = "📅 " + T.fmtDate(new Date()); }, 60000);
+})();
+</script>
+</body>
+</html>
