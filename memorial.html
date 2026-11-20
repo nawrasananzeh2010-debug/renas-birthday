@@ -740,9 +740,12 @@
 
   /* ================= Share ================= */
   const shareText = 'صدقة جارية عن روح المرحوم عبد الكريم سالم النقرش 🤍\nتوزيع 100 كرتونة ماء في منطقة النعيمة يوم 21/12/2026\nلا تنسوه من دعائكم:\n';
-  document.getElementById('waShare').href = 'https://wa.me/?text=' + encodeURIComponent(shareText + location.href);
+  // Public link of the page (falls back to the current address when hosted elsewhere, e.g. GitHub Pages)
+  const SHARE_URL = location.protocol.startsWith('http') && !/claudeusercontent|claude\.ai/.test(location.host)
+    ? location.href : 'https://claude.ai/artifact/JK8kwke2vuUpz7937SQsKa';
+  document.getElementById('waShare').href = 'https://wa.me/?text=' + encodeURIComponent(shareText + SHARE_URL);
   document.getElementById('copyLink').addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(location.href); toast('تم نسخ الرابط ✓'); }
+    try { await navigator.clipboard.writeText(SHARE_URL); toast('تم نسخ الرابط ✓'); }
     catch { toast('انسخ الرابط من شريط العنوان'); }
   });
 
