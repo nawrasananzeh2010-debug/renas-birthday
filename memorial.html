@@ -845,8 +845,24 @@
   });
   soundBtn.addEventListener('click', e => {
     e.stopPropagation();
-    if (audio.paused) playQuran(); else audio.pause();
+    if (audio.paused) { userPaused = false; playQuran(); } else audio.pause();
   });
+  // Try to start the recitation as soon as the page opens.
+  // If the browser blocks autoplay, start on the very first touch / click / key anywhere.
+  let userPaused = false;
+  audio.addEventListener('pause', () => { if (!audio.ended) userPaused = true; });
+  const UNLOCK = ['pointerdown', 'pointerup', 'touchend', 'mousedown', 'click', 'keydown'];
+  function unlock() {
+    UNLOCK.forEach(ev => removeEventListener(ev, unlock, true));
+    if (audio.paused && !userPaused) playQuran();
+  }
+  function autoStart() {
+    loadTrack(0);
+    const p = audio.play();
+    if (p) p.catch(() => UNLOCK.forEach(ev => addEventListener(ev, unlock, { capture: true, passive: true })));
+  }
+  autoStart();
+
   document.querySelectorAll('.verse-play').forEach(b => b.addEventListener('click', e => {
     e.stopPropagation();
     const i = +b.dataset.i;
