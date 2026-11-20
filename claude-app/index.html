@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07061a">
+  <title>توجيهي نورس 2027</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* VOICE: دافئ ومحفّز، لعائلة · IDEA: لوحة إنجاز ليلية لطالب توجيهي
+       PICTURE: حلقات التقدّم والعد التنازلي · COLOUR and TYPE: ليلي بنفسجي، Tajawal
+       LAYOUT: صفحتان (نورس / الأب) تختار حسب الرابط #dad أو صاحب الصفحة */
+    #boot { position: fixed; inset: 0; display: grid; place-items: center; text-align: center; z-index: 5; transition: opacity .6s; }
+    #boot .e { font-size: 3.4rem; display: block; animation: float 3s ease-in-out infinite; }
+    #boot b { display: block; margin-top: 10px; font-size: 1.2rem; }
+    #boot.hide { opacity: 0; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <div id="boot"><div><span class="e">🎓</span><b>توجيهي نورس 2027</b><span class="muted small">جارِ التحميل…</span></div></div>
+  <script src="config.js"></script>
+  <script src="core.js"></script>
+  <script>
+  {
+    const boot = document.getElementById("boot");
+
+    async function pickView() {
+      const h = location.hash.slice(1);
+      if (h === "dad" || h === "nawras") return h;
+      const user = await TJ.getCap("user", 4000);
+      if (!user) return "nawras";
+      try { return (await user.isOwner()) ? "nawras" : "dad"; } catch { return "nawras"; }
+    }
+
+    async function load(view) {
+      const html = await (await fetch(view + ".html", { cache: "no-store" })).text();
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      document.title = doc.title || document.title;
+      doc.head.querySelectorAll("style").forEach((s) => document.head.appendChild(s.cloneNode(true)));
+      const scripts = [];
+      [...doc.body.children].forEach((el) => {
+        if (el.tagName === "SCRIPT") { if (!el.src) scripts.push(el.textContent); return; }
+        document.body.appendChild(document.importNode(el, true));
+      });
+      scripts.forEach((code) => { const s = document.createElement("script"); s.textContent = code; document.body.appendChild(s); });
+      boot.classList.add("hide"); setTimeout(() => boot.remove(), 700);
+    }
+
+    let current = null;
+    pickView().then((v) => { current = v; return load(v); }).catch((e) => {
+      console.error(e);
+      boot.querySelector(".small").textContent = "صار خطأ بالتحميل — حدّث الصفحة";
+    });
+    addEventListener("hashchange", () => {
+      const h = location.hash.slice(1);
+      if ((h === "dad" || h === "nawras") && current && h !== current) location.reload();
+    });
+  }
+  </script>
+</body>
+</html>
