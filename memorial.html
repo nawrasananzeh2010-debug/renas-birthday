@@ -342,17 +342,49 @@
   .ameen-count.pop { animation: pop .5s; }
   @keyframes pop { 50% { transform: scale(1.15); color: var(--gold-soft); } }
 
-  /* ===== Share ===== */
-  .share { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-  .share a, .share button {
-    font-family: 'Tajawal'; font-size: 1rem; font-weight: 500; text-decoration: none;
-    padding: 12px 28px; border-radius: 999px; cursor: pointer;
-    border: 1px solid var(--border); background: var(--card); color: var(--text);
-    transition: transform .25s, border-color .2s, background .2s, box-shadow .25s;
+  /* ===== Family ===== */
+  .family { display: flex; flex-wrap: wrap; justify-content: center; gap: 34px 16px; max-width: 760px; margin: 18px auto 0; }
+  .member {
+    position: relative; padding: 16px 26px 14px; border-radius: 999px;
+    border: 1px solid rgba(216,181,106,.15); background: rgba(255,255,255,.03);
+    opacity: .25; filter: blur(2px); transform: translateY(20px) scale(.9);
+    transition: opacity 1s ease, filter 1s ease, transform 1s cubic-bezier(.2,1.3,.4,1), border-color 1s, box-shadow 1s, background 1s;
   }
-  .share a:hover, .share button:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: 0 10px 24px rgba(0,0,0,.3); }
-  .share .wa { background: #1f8f4e; border-color: #1f8f4e; animation: waPulse 2.5s ease-in-out infinite; }
-  @keyframes waPulse { 50% { box-shadow: 0 0 0 8px rgba(31,143,78,.18); } }
+  .member.lit {
+    opacity: 1; filter: none; transform: none; border-color: var(--gold);
+    background: linear-gradient(160deg, rgba(216,181,106,.14), rgba(255,255,255,.03));
+    box-shadow: 0 0 30px rgba(216,181,106,.25), inset 0 0 18px rgba(216,181,106,.08);
+    animation: memberFloat 5s ease-in-out infinite;
+  }
+  .member:nth-child(2n).lit { animation-delay: -1.5s; } .member:nth-child(3n).lit { animation-delay: -3s; }
+  @keyframes memberFloat { 50% { transform: translateY(-7px); } }
+  .mname { font-family: 'Amiri', serif; font-size: clamp(1.2rem, 3.4vw, 1.5rem); font-weight: 700; color: var(--gold-soft); white-space: nowrap; }
+  .mflame {
+    position: absolute; top: -22px; left: 50%; width: 14px; height: 24px; margin-left: -7px;
+    border-radius: 50% 50% 35% 35% / 60% 60% 40% 40%;
+    background: radial-gradient(ellipse at 50% 80%, #fff 0%, #ffe9a8 30%, #ffb347 60%, rgba(255,120,30,0) 78%);
+    transform-origin: 50% 90%; transform: scale(0); transition: transform .8s cubic-bezier(.2,1.6,.4,1);
+    filter: drop-shadow(0 0 8px rgba(255,190,90,.9));
+  }
+  .member.lit .mflame { transform: scale(1); animation: flicker 1.4s ease-in-out infinite; }
+  .family-dua { margin-top: 38px; font-family: 'Amiri', serif; font-size: clamp(1.2rem, 3.2vw, 1.55rem); color: var(--gold-soft); opacity: 0; transform: translateY(14px); transition: all 1.2s ease; }
+  .family-dua.show { opacity: 1; transform: none; }
+
+  /* ===== Scroll-driven extras ===== */
+  #tint { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0;
+    background: radial-gradient(80% 60% at 50% 100%, rgba(42,143,192,.22), transparent 70%); }
+  #tint2 { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0;
+    background: radial-gradient(70% 50% at 50% 30%, rgba(216,181,106,.16), transparent 70%); }
+  .px { will-change: transform; }
+  .mosques .px { display: inline-block; }
+  .cards .px { display: grid; perspective: 1000px; }
+  .hw { display: inline-block; opacity: .15; transition: opacity .3s; }
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  .lenis.lenis-stopped { overflow: hidden; }
+  #intro.gone { transform: scale(1.25); filter: blur(12px); }
+  #intro { transition: opacity 1.4s ease, visibility 1.4s, transform 1.6s cubic-bezier(.6,0,.2,1), filter 1.4s; }
+  .reveal { will-change: opacity, transform; }
 
   /* ===== Footer wave ===== */
   footer { position: relative; z-index: 1; text-align: center; color: var(--muted); font-size: .95rem; padding: 90px 0 26px; overflow: hidden; }
@@ -476,6 +508,7 @@
 <canvas id="fx"></canvas>
 <div id="progress"></div>
 <div class="moon"></div>
+<div id="tint"></div><div id="tint2"></div>
 
 <main>
   <!-- Header -->
@@ -546,7 +579,7 @@
 
   <!-- Distribution plan -->
   <section id="plan">
-    <div class="reveal up"><h2>تفاصيل التوزيع</h2><p class="sub">نرجو من الأهل والأحبة المشاركة في الأجر</p></div>
+    <div class="reveal up"><h2>تفاصيل التوزيع</h2><p class="sub">إلى أهل المرحوم عبد الكريم سالم النقرش رحمه الله</p></div>
     <div class="timeline" id="timeline">
       <div class="tl-line"><span id="tlFill"></span></div>
       <div class="step reveal right">
@@ -560,27 +593,26 @@
         <div class="dot">🤝</div>
         <div class="step-body">
           <div class="step-title">الاستلام</div>
-          <p>يتفضّل المشاركون باستلام الكراتين من ساحة المنزل.</p>
+          <p>يتولّى <b>أهل المرحوم</b> استلام الكراتين من ساحة المنزل.</p>
         </div>
       </div>
       <div class="step reveal right">
         <div class="dot">🕌</div>
         <div class="step-body">
           <div class="step-title">التوزيع على المساجد</div>
-          <p>وأنتم عليكم التوزيع على <b>كامل أو أغلب مساجد النعيمة</b>، جزاكم الله خيرًا وجعله في ميزان حسناتكم.</p>
+          <p>ثم يقوم أهل المرحوم بالتوزيع على <b>كامل أو أغلب مساجد النعيمة</b>، تقبّل الله منكم.</p>
         </div>
       </div>
     </div>
     <div class="mosques reveal up" aria-hidden="true">
       <span>🕌</span><span>🕌</span><span>🕌</span><span>🕌</span><span>🕌</span><span>🕌</span><span>🕌</span>
     </div>
-    <p class="cta reveal zoom">«الدالُّ على الخير كفاعله» — شارك ولو بكرتونة واحدة 🤍</p>
   </section>
 
   <!-- Hadith -->
   <section>
     <div class="divider"></div>
-    <p class="hadith reveal zoom">
+    <p class="hadith reveal zoom" id="hadith">
       قال رسول الله ﷺ: <span class="shimmer">«أَفْضَلُ الصَّدَقَةِ سَقْيُ الْمَاءِ»</span>
       <small>رواه أحمد وأبو داود والنسائي وابن ماجه</small>
     </p>
@@ -625,14 +657,19 @@
     </div>
   </section>
 
-  <!-- Share -->
-  <section class="reveal up">
-    <h2>شارك الأجر</h2>
-    <p class="sub">انشر الصفحة ليدعو له أكبر عدد من الناس</p>
-    <div class="share">
-      <a class="wa" id="waShare" href="#" target="_blank" rel="noopener">مشاركة عبر واتساب</a>
-      <button id="copyLink">نسخ الرابط</button>
+  <!-- Family -->
+  <section id="familySec">
+    <div class="reveal up"><h2>أهل المرحوم</h2><p class="sub">عائلة المرحوم عبد الكريم سالم النقرش رحمه الله</p></div>
+    <div class="family" id="family">
+      <div class="member"><span class="mflame"></span><span class="mname">أصفهان شطناوي</span></div>
+      <div class="member"><span class="mflame"></span><span class="mname">ريناس النقرش</span></div>
+      <div class="member"><span class="mflame"></span><span class="mname">رند النقرش</span></div>
+      <div class="member"><span class="mflame"></span><span class="mname">ميار النقرش</span></div>
+      <div class="member"><span class="mflame"></span><span class="mname">لارين النقرش</span></div>
+      <div class="member"><span class="mflame"></span><span class="mname">حمزة النقرش</span></div>
+      <div class="member"><span class="mflame"></span><span class="mname">محمد النقرش</span></div>
     </div>
+    <p class="family-dua" id="familyDua">جمعكم الله به في جنّات النعيم، وربط على قلوبكم 🤍</p>
   </section>
 </main>
 
@@ -652,6 +689,9 @@
 </button>
 <audio id="quranAudio" preload="auto"></audio>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script>
 (() => {
   // ===== Target: 21/12/2026, 10:00 AM Jordan time (UTC+3) — distribution time =====
@@ -715,35 +755,46 @@
   let scrollY = 0;
   addEventListener('scroll', () => { scrollY = window.scrollY; updateProgress(); updateTimeline(); }, { passive: true });
 
+  // Pre-rendered glow sprites (much cheaper than gradients / shadowBlur every frame)
+  function glowSprite(rgb, size = 64) {
+    const c = document.createElement('canvas'); c.width = c.height = size;
+    const x = c.getContext('2d'), g = x.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+    g.addColorStop(0, `rgba(${rgb},1)`); g.addColorStop(.18, `rgba(${rgb},.75)`); g.addColorStop(.45, `rgba(${rgb},.18)`); g.addColorStop(1, `rgba(${rgb},0)`);
+    x.fillStyle = g; x.fillRect(0, 0, size, size); return c;
+  }
+  const SPR = { '255,205,120': glowSprite('255,205,120'), '150,210,240': glowSprite('150,210,240'),
+                '240,223,180': glowSprite('240,223,180'), '168,227,247': glowSprite('168,227,247'), '255,255,255': glowSprite('255,255,255', 16) };
+  let dt = 1;
   function drawSky(t) {
     sctx.clearRect(0, 0, W, H);
     // stars with parallax + twinkle
+    const star = SPR['255,255,255'];
     for (const s of stars) {
-      s.p += s.s;
-      const a = .35 + Math.sin(s.p) * .35;
-      const y = ((s.y * H - scrollY * s.depth) % H + H) % H;
-      sctx.beginPath(); sctx.arc(s.x * W, y, s.r, 0, 7);
-      sctx.fillStyle = `rgba(255,255,255,${a})`; sctx.fill();
+      s.p += s.s * dt;
+      sctx.globalAlpha = .3 + Math.sin(s.p) * .3 + .1;
+      const y = ((s.y * H - scrollY * s.depth) % H + H) % H, d = s.r * 4;
+      sctx.drawImage(star, s.x * W - d / 2, y - d / 2, d, d);
     }
     // rising glowing lanterns / orbs
+    sctx.globalCompositeOperation = 'lighter';
     for (let i = 0; i < lanterns.length; i++) {
       const l = lanterns[i];
-      l.y -= l.vy; l.sway += .01;
-      const x = l.x + Math.sin(l.sway) * 18;
-      const g = sctx.createRadialGradient(x, l.y, 0, x, l.y, l.r * 6);
-      g.addColorStop(0, `rgba(${l.hue},.9)`); g.addColorStop(.3, `rgba(${l.hue},.25)`); g.addColorStop(1, `rgba(${l.hue},0)`);
-      sctx.fillStyle = g; sctx.beginPath(); sctx.arc(x, l.y, l.r * 6, 0, 7); sctx.fill();
+      l.y -= l.vy * dt; l.sway += .01 * dt;
+      const x = l.x + Math.sin(l.sway) * 18, d = l.r * 12;
+      sctx.globalAlpha = .85;
+      sctx.drawImage(SPR[l.hue], x - d / 2, l.y - d / 2, d, d);
       if (l.y < -30) lanterns[i] = newLantern(false);
     }
+    sctx.globalCompositeOperation = 'source-over'; sctx.globalAlpha = 1;
     // shooting stars
-    if (Math.random() < .006) shooters.push({ x: Math.random() * W * .8 + W * .2, y: Math.random() * H * .4, vx: -(Math.random() * 6 + 6), vy: Math.random() * 3 + 2, life: 1 });
+    if (Math.random() < .006 * dt) shooters.push({ x: Math.random() * W * .8 + W * .2, y: Math.random() * H * .4, vx: -(Math.random() * 6 + 6), vy: Math.random() * 3 + 2, life: 1 });
     shooters = shooters.filter(s => s.life > 0);
     for (const s of shooters) {
       const grad = sctx.createLinearGradient(s.x, s.y, s.x - s.vx * 12, s.y - s.vy * 12);
       grad.addColorStop(0, `rgba(255,248,225,${s.life})`); grad.addColorStop(1, 'rgba(255,248,225,0)');
-      sctx.strokeStyle = grad; sctx.lineWidth = 2; sctx.beginPath();
+      sctx.strokeStyle = grad; sctx.lineWidth = 2; sctx.lineCap = 'round'; sctx.beginPath();
       sctx.moveTo(s.x, s.y); sctx.lineTo(s.x - s.vx * 12, s.y - s.vy * 12); sctx.stroke();
-      s.x += s.vx; s.y += s.vy; s.life -= .015;
+      s.x += s.vx * dt; s.y += s.vy * dt; s.life -= .015 * dt;
     }
   }
 
@@ -765,17 +816,25 @@
 
   function drawFx() {
     fctx.clearRect(0, 0, W, H);
+    if (!parts.length) return;
     parts = parts.filter(p => p.life > 0);
+    fctx.globalCompositeOperation = 'lighter';
     for (const p of parts) {
-      p.x += p.vx; p.y += p.vy; p.vy += p.g; p.vx *= .99; p.life -= p.decay;
-      fctx.beginPath(); fctx.arc(p.x, p.y, p.r * p.life + .3, 0, 7);
-      fctx.fillStyle = `rgba(${p.c},${p.life})`;
-      fctx.shadowBlur = 10; fctx.shadowColor = `rgba(${p.c},1)`; fctx.fill();
+      p.x += p.vx * dt; p.y += p.vy * dt; p.vy += p.g * dt; p.vx *= Math.pow(.99, dt); p.life -= p.decay * dt;
+      const d = (p.r * p.life + .4) * 8;
+      fctx.globalAlpha = Math.max(0, p.life);
+      fctx.drawImage(SPR[p.c] || SPR['240,223,180'], p.x - d / 2, p.y - d / 2, d, d);
     }
-    fctx.shadowBlur = 0;
+    fctx.globalCompositeOperation = 'source-over'; fctx.globalAlpha = 1;
   }
 
-  function loop(t) { drawSky(t); drawFx(); requestAnimationFrame(loop); }
+  // frame-rate independent loop (smooth on 60/90/120Hz screens), pauses when tab hidden
+  let last = 0;
+  function loop(t) {
+    dt = last ? Math.min((t - last) / 16.667, 3) : 1; last = t;
+    if (!document.hidden) { drawSky(t); drawFx(); }
+    requestAnimationFrame(loop);
+  }
   if (!reduce) requestAnimationFrame(loop); else drawSky(0);
 
   /* ================= Timeline fill on scroll ================= */
@@ -833,10 +892,12 @@
       el.classList.add('show');
       if (el.id === 'waterCard' && !cartonsDone) { cartonsDone = true; el.classList.add('filled'); animateCartons(); }
       if (el.id === 'dua' && !duaDone) { duaDone = true; staggerDua(); }
+      if (el.id === 'family') lightFamily();
+      if (el.id === 'familyDua') el.classList.add('show');
       io.unobserve(el);
     }
   }, { threshold: .2 });
-  document.querySelectorAll('.reveal, .divider, #dua').forEach(el => { if (!el.closest('#hero')) io.observe(el); });
+  document.querySelectorAll('.reveal, .divider, #dua, #family, #familyDua').forEach(el => { if (!el.closest('#hero')) io.observe(el); });
 
   function animateCartons() {
     const el = document.getElementById('cartons');
@@ -855,6 +916,13 @@
         spawn(r.left + r.width / 2, r.top + r.height / 2, 40, { speed: 4, color: '168,227,247', size: 2.6 });
       }
     }, 35);
+  }
+  function lightFamily() {
+    document.querySelectorAll('#family .member').forEach((m, i) => setTimeout(() => {
+      m.classList.add('lit');
+      const r = m.getBoundingClientRect();
+      spawn(r.left + r.width / 2, r.top - 10, 14, { up: true, speed: 2.2, g: -.01, decay: .02, size: 1.8, color: '255,205,120' });
+    }, 350 + i * 450));
   }
   function staggerDua() {
     document.querySelectorAll('#dua .line').forEach((l, i) => l.style.transitionDelay = (i * .45) + 's');
@@ -895,16 +963,94 @@
   });
   showAmeen();
 
-  /* ================= Share ================= */
-  const shareText = 'صدقة جارية عن روح المرحوم عبد الكريم سالم النقرش 🤍\n100 كرتونة مياه في ساحة منزل المرحوم في النعيمة، الإثنين 21/12/2026 الساعة 10:00 صباحًا، للتوزيع على مساجد النعيمة\nلا تنسوه من دعائكم:\n';
-  // Public link of the page (falls back to the current address when hosted elsewhere, e.g. GitHub Pages)
-  const SHARE_URL = location.protocol.startsWith('http') && !/claudeusercontent|claude\.ai/.test(location.host)
-    ? location.href : 'https://claude.ai/artifact/JK8kwke2vuUpz7937SQsKa';
-  document.getElementById('waShare').href = 'https://wa.me/?text=' + encodeURIComponent(shareText + SHARE_URL);
-  document.getElementById('copyLink').addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(SHARE_URL); toast('تم نسخ الرابط ✓'); }
-    catch { toast('انسخ الرابط من شريط العنوان'); }
-  });
+  /* ================= Smooth scroll + scroll-driven animation ================= */
+  // Split hadith text into words for a scrubbed reveal
+  (function splitHadith() {
+    const span = document.querySelector('#hadith .shimmer');
+    if (!span) return;
+    const words = span.textContent.trim().split(/\s+/);
+    span.classList.remove('shimmer');
+    span.innerHTML = words.map(w => `<span class="hw shimmer">${w}</span>`).join(' ');
+  })();
+
+  if (!reduce && window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    // Wrap an element so scroll effects never fight its own CSS reveal/hover transforms
+    const wrap = el => { const w = document.createElement('div'); w.className = 'px'; el.parentNode.insertBefore(w, el); w.appendChild(el); return w; };
+    const wrapAll = sel => gsap.utils.toArray(sel).map(wrap);
+
+    // Buttery smooth scrolling (desktop wheel/trackpad; touch stays native)
+    if (window.Lenis) {
+      const lenis = new Lenis({ duration: 1.25, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(t => lenis.raf(t * 1000));
+      gsap.ticker.lagSmoothing(0);
+      if (document.body.classList.contains('locked')) lenis.stop();
+      new MutationObserver(() => document.body.classList.contains('locked') ? lenis.stop() : lenis.start())
+        .observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    }
+
+    // Hero parallax: candle sinks & glows, name drifts, basmala floats away
+    const heroTl = gsap.timeline({ scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 1 } });
+    heroTl.to(wrap(document.querySelector('#hero .candle')), { y: 120, scale: .8, opacity: .3, ease: 'none' }, 0)
+          .to(wrap(document.querySelector('#hero .basmala')), { y: -60, opacity: 0, ease: 'none' }, 0)
+          .to('#name', { y: 40, letterSpacing: '4px', ease: 'none' }, 0)
+          .to(wrap(document.querySelector('#hero .ayah')), { y: 60, ease: 'none' }, 0);
+    gsap.to('.moon', { y: 220, x: 40, rotate: -25, ease: 'none', scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 1.5 } });
+
+    // Countdown floats up gently as it passes
+    gsap.fromTo('#countdown', { y: 40 }, { y: -40, ease: 'none', scrollTrigger: { trigger: '#cd', start: 'top bottom', end: 'bottom top', scrub: 1 } });
+
+    // Cards drift at different speeds (depth)
+    wrapAll('.cards .card').forEach((c, i) => {
+      gsap.fromTo(c, { y: 30 + (i % 2) * 40 }, { y: -30 - (i % 2) * 30, ease: 'none',
+        scrollTrigger: { trigger: c, start: 'top bottom', end: 'bottom top', scrub: 1.2 } });
+    });
+
+    // Water drops ripple wave as you scroll past
+    gsap.fromTo('#drops', { scale: .9, rotate: -2 }, { scale: 1.04, rotate: 2, ease: 'none',
+      scrollTrigger: { trigger: '#drops', start: 'top bottom', end: 'bottom top', scrub: 1 } });
+
+    // Timeline dots pulse when reached
+    gsap.utils.toArray('.step .dot').forEach(d => {
+      ScrollTrigger.create({ trigger: d, start: 'top 70%', onEnter: () => gsap.fromTo(d, { scale: 1.5 }, { scale: 1, duration: .9, ease: 'elastic.out(1, .4)' }) });
+    });
+
+    // Mosques rise one after another
+    gsap.from(wrapAll('.mosques span'), { y: 50, opacity: 0, scale: .5, stagger: .12, duration: 1, ease: 'back.out(2)',
+      scrollTrigger: { trigger: '.mosques', start: 'top 85%' } });
+
+    // Hadith words light up while scrolling
+    gsap.to('#hadith .hw', { opacity: 1, stagger: .15, ease: 'none',
+      scrollTrigger: { trigger: '#hadith', start: 'top 85%', end: 'top 40%', scrub: 1 } });
+
+    // Verses tilt in
+    wrapAll('.verse').forEach((v, i) => {
+      gsap.fromTo(v, { rotateX: 18, y: 60, transformPerspective: 800 }, { rotateX: 0, y: 0, ease: 'power2.out',
+        scrollTrigger: { trigger: v, start: 'top bottom', end: 'top 55%', scrub: 1 } });
+    });
+
+    // Dua box breathes in
+    gsap.fromTo('.dua-box', { scale: .92, borderRadius: '60px' }, { scale: 1, borderRadius: '26px', ease: 'none',
+      scrollTrigger: { trigger: '.dua-box', start: 'top bottom', end: 'top 45%', scrub: 1 } });
+
+    // Background mood: water tint over the charity section, golden glow over dua & family
+    gsap.to('#tint', { opacity: 1, ease: 'none', scrollTrigger: { trigger: '#details', start: 'top 80%', end: 'bottom 20%', scrub: true,
+      onLeave: () => gsap.to('#tint', { opacity: 0, duration: 1 }), onEnterBack: () => gsap.to('#tint', { opacity: 1, duration: 1 }) } });
+    gsap.to('#tint2', { opacity: 1, ease: 'none', scrollTrigger: { trigger: '.dua-box', start: 'top 80%', end: 'bottom 50%', scrub: true } });
+
+    // Magnetic Ameen button (desktop)
+    const btn = document.getElementById('ameenBtn');
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      gsap.to(btn, { x: (e.clientX - r.left - r.width / 2) * .25, y: (e.clientY - r.top - r.height / 2) * .35, duration: .4, ease: 'power3.out' });
+    });
+    btn.addEventListener('mouseleave', () => gsap.to(btn, { x: 0, y: 0, duration: .7, ease: 'elastic.out(1, .4)' }));
+
+    addEventListener('load', () => ScrollTrigger.refresh());
+  } else {
+    document.querySelectorAll('#hadith .hw').forEach(w => w.style.opacity = 1);
+  }
 
   /* ================= Quran background audio ================= */
   const TRACKS = [
