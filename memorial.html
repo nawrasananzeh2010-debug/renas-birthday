@@ -371,6 +371,42 @@
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
 
+  /* ===== Quran verses ===== */
+  .verses { display: grid; gap: 22px; }
+  .verse {
+    position: relative; border: 1px solid var(--border); border-radius: 24px; padding: 30px 22px 22px;
+    background: var(--card); transition: border-color .5s, box-shadow .5s, transform .5s;
+  }
+  .verse.playing { border-color: var(--gold); box-shadow: 0 0 40px rgba(216,181,106,.22); transform: scale(1.02); }
+  .verse .q { font-family: 'Amiri', serif; font-size: clamp(1.3rem, 3.4vw, 1.75rem); line-height: 2.2; }
+  .verse .ref { margin-top: 10px; color: var(--muted); font-size: .9rem; }
+  .verse .why { margin-top: 6px; color: var(--gold-soft); font-size: .95rem; }
+  .verse .eq { position: absolute; top: 14px; left: 18px; display: flex; gap: 3px; align-items: flex-end; height: 18px; opacity: 0; transition: opacity .4s; }
+  .verse.playing .eq { opacity: 1; }
+  .eq i { width: 3px; background: var(--gold); border-radius: 2px; animation: eq 1s ease-in-out infinite; }
+  .eq i:nth-child(2) { animation-delay: .2s; } .eq i:nth-child(3) { animation-delay: .4s; } .eq i:nth-child(4) { animation-delay: .1s; }
+  @keyframes eq { 0%,100% { height: 4px; } 50% { height: 18px; } }
+  .verse-play {
+    margin-top: 14px; font-family: 'Tajawal'; font-size: .95rem; color: var(--gold-soft); cursor: pointer;
+    background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 7px 20px; transition: border-color .2s, background .2s;
+  }
+  .verse-play:hover { border-color: var(--gold); background: rgba(216,181,106,.1); }
+
+  /* ===== Floating sound button ===== */
+  #soundBtn {
+    position: fixed; bottom: 20px; left: 20px; z-index: 65;
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Tajawal'; font-size: .95rem; font-weight: 700; color: var(--bg1);
+    background: linear-gradient(135deg, #e8c77f, var(--gold)); border: none; border-radius: 999px;
+    padding: 12px 18px; cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,.35);
+    transition: transform .2s;
+  }
+  #soundBtn:hover { transform: scale(1.06); }
+  #soundBtn.idle { animation: btnBreath 2s ease-in-out infinite; }
+  #soundBtn .eq i { background: var(--bg1); }
+  #soundBtn .eq { display: flex; gap: 2px; align-items: flex-end; height: 16px; }
+  #soundBtn.paused .eq i { animation: none; height: 4px; }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   }
@@ -384,7 +420,7 @@
     <div class="halo"></div><div class="wax"></div><div class="wick"></div><div class="flame"></div>
   </div>
   <div class="intro-text" id="introText"></div>
-  <div class="hint">اضغط للدخول</div>
+  <div class="hint">اضغط للدخول والاستماع للقرآن 🎧</div>
 </div>
 
 <canvas id="sky"></canvas>
@@ -464,6 +500,27 @@
     <div class="divider"></div>
   </section>
 
+  <!-- Quran verses -->
+  <section id="quran">
+    <div class="reveal up"><h2>آيات نتذكّر بها موتانا</h2><p class="sub">بصوت الشيخ مشاري العفاسي</p></div>
+    <div class="verses">
+      <div class="verse reveal right" data-i="0">
+        <div class="eq"><i></i><i></i><i></i><i></i></div>
+        <p class="q">﴿وَالَّذِينَ جَاءُوا مِنْ بَعْدِهِمْ يَقُولُونَ رَبَّنَا اغْفِرْ لَنَا وَلِإِخْوَانِنَا الَّذِينَ سَبَقُونَا بِالْإِيمَانِ وَلَا تَجْعَلْ فِي قُلُوبِنَا غِلًّا لِلَّذِينَ آمَنُوا رَبَّنَا إِنَّكَ رَءُوفٌ رَحِيمٌ﴾</p>
+        <p class="ref">سورة الحشر - الآية 10</p>
+        <p class="why">الدعاء لمن سبقونا وعدم نسيانهم</p>
+        <button class="verse-play" data-i="0">▶ استمع للآية</button>
+      </div>
+      <div class="verse reveal left" data-i="1">
+        <div class="eq"><i></i><i></i><i></i><i></i></div>
+        <p class="q">﴿مَثَلُ الَّذِينَ يُنْفِقُونَ أَمْوَالَهُمْ فِي سَبِيلِ اللَّهِ كَمَثَلِ حَبَّةٍ أَنْبَتَتْ سَبْعَ سَنَابِلَ فِي كُلِّ سُنْبُلَةٍ مِائَةُ حَبَّةٍ ۗ وَاللَّهُ يُضَاعِفُ لِمَنْ يَشَاءُ ۗ وَاللَّهُ وَاسِعٌ عَلِيمٌ﴾</p>
+        <p class="ref">سورة البقرة - الآية 261</p>
+        <p class="why">فضل الصدقة ومضاعفة أجرها</p>
+        <button class="verse-play" data-i="1">▶ استمع للآية</button>
+      </div>
+    </div>
+  </section>
+
   <!-- Dua -->
   <section class="reveal zoom">
     <div class="dua-box">
@@ -503,6 +560,11 @@
 
 <div class="toast" id="toast"></div>
 
+<button id="soundBtn" class="idle paused" aria-label="تشغيل أو إيقاف التلاوة">
+  <span class="eq"><i></i><i></i><i></i><i></i></span><span id="soundLabel">استمع للقرآن</span>
+</button>
+<audio id="quranAudio" preload="auto"></audio>
+
 <script>
 (() => {
   // ===== Target date: 21/12/2026, 00:00 Jordan time (UTC+3) =====
@@ -530,8 +592,8 @@
     document.body.classList.remove('locked');
     setTimeout(startHero, 500);
   }
-  intro.addEventListener('click', closeIntro);
-  setTimeout(closeIntro, reduce ? 300 : 5200);
+  intro.addEventListener('click', () => { playQuran(); closeIntro(); });
+  setTimeout(closeIntro, reduce ? 300 : 9000);
 
   /* ================= Hero name animation ================= */
   const nameEl = document.getElementById('name');
@@ -748,6 +810,48 @@
     try { await navigator.clipboard.writeText(SHARE_URL); toast('تم نسخ الرابط ✓'); }
     catch { toast('انسخ الرابط من شريط العنوان'); }
   });
+
+  /* ================= Quran background audio ================= */
+  const TRACKS = [
+    'https://everyayah.com/data/Alafasy_128kbps/059010.mp3', // الحشر 10
+    'https://everyayah.com/data/Alafasy_128kbps/002261.mp3', // البقرة 261
+  ];
+  const audio = document.getElementById('quranAudio');
+  const soundBtn = document.getElementById('soundBtn');
+  const soundLabel = document.getElementById('soundLabel');
+  const verseEls = document.querySelectorAll('.verse');
+  let track = 0;
+  audio.volume = .8;
+  function loadTrack(i) { track = i; audio.src = TRACKS[i]; }
+  function markVerse() { verseEls.forEach(v => v.classList.toggle('playing', !audio.paused && +v.dataset.i === track)); }
+  function setUi() {
+    const on = !audio.paused;
+    soundBtn.classList.toggle('paused', !on);
+    soundBtn.classList.remove('idle');
+    soundLabel.textContent = on ? 'إيقاف التلاوة' : 'استمع للقرآن';
+    markVerse();
+  }
+  function playQuran(i) {
+    if (typeof i === 'number' && i !== track) loadTrack(i);
+    else if (!audio.src) loadTrack(0);
+    const p = audio.play();
+    if (p) p.catch(() => soundBtn.classList.add('idle'));
+  }
+  audio.addEventListener('play', setUi);
+  audio.addEventListener('pause', setUi);
+  audio.addEventListener('ended', () => {
+    // short pause between verses, then continue (loops)
+    setTimeout(() => { loadTrack((track + 1) % TRACKS.length); playQuran(); }, 2500);
+  });
+  soundBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    if (audio.paused) playQuran(); else audio.pause();
+  });
+  document.querySelectorAll('.verse-play').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    const i = +b.dataset.i;
+    if (!audio.paused && i === track) audio.pause(); else playQuran(i);
+  }));
 
   function toast(msg) {
     const t = document.getElementById('toast');
