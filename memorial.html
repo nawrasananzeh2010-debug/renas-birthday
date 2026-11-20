@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>صدقة جارية عن روح المرحوم عبد الكريم سالم النقرش</title>
+<meta name="description" content="توزيع 100 كرتونة ماء في منطقة النعيمة عن روح المرحوم عبد الكريم سالم النقرش - 21/12/2026">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg1: #0b1a2a;
+    --bg2: #12293f;
+    --gold: #d8b56a;
+    --gold-soft: #e9d5a4;
+    --text: #eef2f6;
+    --muted: #a9b8c8;
+    --card: rgba(255, 255, 255, 0.05);
+    --border: rgba(216, 181, 106, 0.25);
+    --water: #6cc4e8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; background: var(--bg1); }
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: -1;
+    background: radial-gradient(ellipse at top, var(--bg2) 0%, var(--bg1) 70%);
+  }
+  body {
+    font-family: 'Tajawal', sans-serif;
+    color: var(--text);
+    background: var(--bg1);
+    min-height: 100vh;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* Stars */
+  #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .star {
+    position: absolute; border-radius: 50%; background: #fff;
+    animation: twinkle var(--d) ease-in-out infinite; opacity: .2;
+  }
+  @keyframes twinkle { 50% { opacity: .9; } }
+
+  main { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 48px 20px 32px; }
+
+  section { margin-bottom: 56px; text-align: center; }
+  .fade { opacity: 0; transform: translateY(24px); transition: opacity 1s ease, transform 1s ease; }
+  .fade.show { opacity: 1; transform: none; }
+
+  /* Header */
+  .basmala {
+    font-family: 'Amiri', serif; font-size: clamp(1.6rem, 4vw, 2.3rem);
+    color: var(--gold); margin-bottom: 28px;
+  }
+  .lantern { font-size: 3rem; display: inline-block; animation: glow 3s ease-in-out infinite; }
+  @keyframes glow {
+    0%,100% { filter: drop-shadow(0 0 6px rgba(216,181,106,.4)); }
+    50% { filter: drop-shadow(0 0 22px rgba(216,181,106,.9)); }
+  }
+  .label { color: var(--muted); font-size: 1.05rem; margin-top: 14px; letter-spacing: .5px; }
+  h1 {
+    font-family: 'Amiri', serif; font-weight: 700;
+    font-size: clamp(2rem, 6vw, 3.4rem); line-height: 1.4;
+    margin: 8px 0 6px;
+    background: linear-gradient(90deg, var(--gold-soft), var(--gold), var(--gold-soft));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .rahimahu { font-family: 'Amiri', serif; font-size: 1.4rem; color: var(--gold-soft); }
+  .divider {
+    width: 160px; height: 1px; margin: 28px auto;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .ayah { font-family: 'Amiri', serif; font-size: clamp(1.3rem, 3.2vw, 1.8rem); }
+  .ayah small { display: block; font-family: 'Tajawal'; font-size: .85rem; color: var(--muted); margin-top: 4px; }
+
+  /* Countdown */
+  h2 { font-family: 'Amiri', serif; font-size: clamp(1.5rem, 4vw, 2rem); color: var(--gold); margin-bottom: 8px; }
+  .sub { color: var(--muted); margin-bottom: 26px; }
+  .countdown { display: flex; justify-content: center; gap: clamp(8px, 2.5vw, 20px); flex-wrap: wrap; }
+  .unit {
+    background: var(--card); border: 1px solid var(--border); border-radius: 18px;
+    width: clamp(72px, 20vw, 140px); padding: 18px 6px 12px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 10px 30px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.05);
+  }
+  .num {
+    font-size: clamp(2rem, 7vw, 3.6rem); font-weight: 700; line-height: 1.1;
+    color: var(--gold-soft); font-variant-numeric: tabular-nums;
+  }
+  .num.tick { animation: tick .5s ease; }
+  @keyframes tick { 0% { transform: scale(1.12); color: #fff; } 100% { transform: none; } }
+  .unit-label { color: var(--muted); font-size: clamp(.8rem, 2.4vw, 1rem); margin-top: 6px; }
+  .date-badge {
+    display: inline-block; margin-top: 26px; padding: 8px 22px; border-radius: 999px;
+    border: 1px solid var(--border); color: var(--gold-soft); font-size: 1.05rem;
+  }
+  .arrived {
+    display: none; font-family: 'Amiri', serif; font-size: clamp(1.4rem, 4vw, 2rem);
+    color: var(--gold-soft); padding: 24px; border: 1px solid var(--border); border-radius: 18px;
+    background: var(--card);
+  }
+
+  /* Details */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+    padding: 28px 20px; transition: transform .3s, border-color .3s;
+  }
+  .card:hover { transform: translateY(-4px); border-color: var(--gold); }
+  .card .icon { font-size: 2.4rem; margin-bottom: 8px; }
+  .card .big { font-size: 2.6rem; font-weight: 700; color: var(--water); line-height: 1.2; }
+  .card .title { font-weight: 700; font-size: 1.15rem; margin-bottom: 4px; }
+  .card .desc { color: var(--muted); font-size: .98rem; }
+
+  /* Water drops */
+  .drops { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; max-width: 520px; margin: 26px auto 0; }
+  .drop {
+    width: 18px; height: 18px; background: var(--water);
+    border-radius: 0 50% 50% 50%; transform: rotate(45deg) scale(0);
+    opacity: .85; transition: transform .4s ease;
+  }
+  .drop.on { transform: rotate(45deg) scale(1); }
+
+  /* Hadith */
+  .hadith {
+    font-family: 'Amiri', serif; font-size: clamp(1.3rem, 3.5vw, 1.9rem);
+    color: var(--gold-soft); line-height: 1.9;
+  }
+  .hadith small { display: block; font-family: 'Tajawal'; font-size: .85rem; color: var(--muted); margin-top: 6px; }
+
+  /* Dua */
+  .dua-box {
+    background: linear-gradient(160deg, rgba(216,181,106,.08), rgba(255,255,255,.02));
+    border: 1px solid var(--border); border-radius: 24px; padding: 34px 24px;
+  }
+  .dua-text { font-family: 'Amiri', serif; font-size: clamp(1.2rem, 3.2vw, 1.6rem); line-height: 2.1; }
+  .ameen-btn {
+    margin-top: 26px; font-family: 'Tajawal'; font-size: 1.1rem; font-weight: 700;
+    background: var(--gold); color: var(--bg1); border: none; border-radius: 999px;
+    padding: 12px 36px; cursor: pointer; transition: transform .2s, box-shadow .2s;
+  }
+  .ameen-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(216,181,106,.35); }
+  .ameen-btn:active { transform: scale(.97); }
+  .ameen-count { margin-top: 12px; color: var(--muted); font-size: .95rem; }
+
+  /* Share */
+  .share { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .share a, .share button {
+    font-family: 'Tajawal'; font-size: 1rem; font-weight: 500; text-decoration: none;
+    padding: 11px 26px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+    transition: border-color .2s, background .2s;
+  }
+  .share a:hover, .share button:hover { border-color: var(--gold); background: rgba(216,181,106,.1); }
+  .share .wa { background: #1f8f4e; border-color: #1f8f4e; }
+  .share .wa:hover { background: #23a35a; }
+
+  footer { text-align: center; color: var(--muted); font-size: .9rem; padding: 24px 0 8px; position: relative; z-index: 1; }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: var(--gold); color: var(--bg1); padding: 10px 22px; border-radius: 999px;
+    font-weight: 700; transition: transform .35s ease; z-index: 10;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .fade { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stars"></div>
+
+<main>
+  <!-- Header -->
+  <section class="fade">
+    <div class="basmala">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+    <div class="lantern">🕯️</div>
+    <p class="label">صدقة جارية عن روح المرحوم بإذن الله</p>
+    <h1>عبد الكريم سالم النقرش</h1>
+    <p class="rahimahu">رحمه الله وغفر له</p>
+    <div class="divider"></div>
+    <p class="ayah">
+      إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ
+      <small>سورة البقرة - الآية 156</small>
+    </p>
+  </section>
+
+  <!-- Countdown -->
+  <section class="fade">
+    <h2>العدّ التنازلي لذكرى الوفاة</h2>
+    <p class="sub">يوم توزيع الصدقة عن روحه الطاهرة</p>
+    <div class="countdown" id="countdown">
+      <div class="unit"><div class="num" id="days">--</div><div class="unit-label">يوم</div></div>
+      <div class="unit"><div class="num" id="hours">--</div><div class="unit-label">ساعة</div></div>
+      <div class="unit"><div class="num" id="minutes">--</div><div class="unit-label">دقيقة</div></div>
+      <div class="unit"><div class="num" id="seconds">--</div><div class="unit-label">ثانية</div></div>
+    </div>
+    <div class="arrived" id="arrived">
+      حلّ اليوم ذكرى وفاة المرحوم عبد الكريم سالم النقرش<br>
+      نسأل الله أن يتقبّل الصدقة عن روحه، وأن يجعلها في ميزان حسناته 🤲
+    </div>
+    <div class="date-badge">📅 الإثنين 21 / 12 / 2026</div>
+  </section>
+
+  <!-- Details -->
+  <section class="fade">
+    <h2>تفاصيل الصدقة</h2>
+    <p class="sub">سقيا ماء عن روحه، نسأل الله القبول</p>
+    <div class="cards">
+      <div class="card">
+        <div class="icon">💧</div>
+        <div class="big"><span id="cartons">0</span></div>
+        <div class="title">كرتونة ماء</div>
+        <div class="desc">تُوزَّع صدقةً جاريةً عن روحه</div>
+      </div>
+      <div class="card">
+        <div class="icon">📍</div>
+        <div class="title">منطقة النعيمة</div>
+        <div class="desc">مكان التوزيع</div>
+      </div>
+      <div class="card">
+        <div class="icon">🗓️</div>
+        <div class="title">21 ديسمبر 2026</div>
+        <div class="desc">في ذكرى وفاته رحمه الله</div>
+      </div>
+    </div>
+    <div class="drops" id="drops" aria-hidden="true"></div>
+  </section>
+
+  <!-- Hadith -->
+  <section class="fade">
+    <div class="divider"></div>
+    <p class="hadith">
+      قال رسول الله ﷺ: «أَفْضَلُ الصَّدَقَةِ سَقْيُ الْمَاءِ»
+      <small>رواه أحمد وأبو داود والنسائي وابن ماجه</small>
+    </p>
+    <div class="divider"></div>
+  </section>
+
+  <!-- Dua -->
+  <section class="fade">
+    <div class="dua-box">
+      <h2>دعاء للمرحوم</h2>
+      <p class="dua-text">
+        اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ، وَعَافِهِ وَاعْفُ عَنْهُ،<br>
+        وَأَكْرِمْ نُزُلَهُ، وَوَسِّعْ مُدْخَلَهُ،<br>
+        وَاغْسِلْهُ بِالْمَاءِ وَالثَّلْجِ وَالْبَرَدِ،<br>
+        وَنَقِّهِ مِنَ الْخَطَايَا كَمَا يُنَقَّى الثَّوْبُ الْأَبْيَضُ مِنَ الدَّنَسِ.<br>
+        اللهم اجعل قبره روضةً من رياض الجنة، واجعل هذه الصدقة نورًا له وفي ميزان حسناته.
+      </p>
+      <button class="ameen-btn" id="ameenBtn">آمين 🤲</button>
+      <p class="ameen-count" id="ameenCount"></p>
+    </div>
+  </section>
+
+  <!-- Share -->
+  <section class="fade">
+    <h2>شارك الأجر</h2>
+    <p class="sub">انشر الصفحة ليدعو له أكبر عدد من الناس</p>
+    <div class="share">
+      <a class="wa" id="waShare" href="#" target="_blank" rel="noopener">مشاركة عبر واتساب</a>
+      <button id="copyLink">نسخ الرابط</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  اللهم اغفر لموتانا وموتى المسلمين 🤍
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ===== Target date: 21/12/2026, 00:00 Jordan time (UTC+3) =====
+  const TARGET = new Date('2026-12-21T00:00:00+03:00').getTime();
+
+  // Stars
+  (function makeStars() {
+    const box = document.getElementById('stars');
+    const n = window.innerWidth < 600 ? 60 : 120;
+    for (let i = 0; i < n; i++) {
+      const s = document.createElement('div');
+      const size = Math.random() * 2 + 1;
+      s.className = 'star';
+      s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${(Math.random()*4+2).toFixed(1)}s;animation-delay:${(Math.random()*4).toFixed(1)}s`;
+      box.appendChild(s);
+    }
+  })();
+
+  // Countdown
+  const els = {
+    days: document.getElementById('days'),
+    hours: document.getElementById('hours'),
+    minutes: document.getElementById('minutes'),
+    seconds: document.getElementById('seconds'),
+  };
+  function setNum(el, val) {
+    const v = String(val).padStart(2, '0');
+    if (el.textContent !== v) {
+      el.textContent = v;
+      el.classList.remove('tick'); void el.offsetWidth; el.classList.add('tick');
+    }
+  }
+  function update() {
+    const diff = TARGET - Date.now();
+    if (diff <= 0) {
+      document.getElementById('countdown').style.display = 'none';
+      document.getElementById('arrived').style.display = 'block';
+      clearInterval(timer);
+      return;
+    }
+    setNum(els.days, Math.floor(diff / 86400000));
+    setNum(els.hours, Math.floor(diff / 3600000) % 24);
+    setNum(els.minutes, Math.floor(diff / 60000) % 60);
+    setNum(els.seconds, Math.floor(diff / 1000) % 60);
+  }
+  const timer = setInterval(update, 1000);
+  update();
+
+  // Fade-in on scroll + cartons counter + drops
+  let counted = false;
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('show');
+      if (!counted && e.target.contains(document.getElementById('cartons'))) {
+        counted = true; animateCartons();
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.fade').forEach(el => io.observe(el));
+
+  const dropsBox = document.getElementById('drops');
+  for (let i = 0; i < 100; i++) {
+    const d = document.createElement('div'); d.className = 'drop'; dropsBox.appendChild(d);
+  }
+  function animateCartons() {
+    const el = document.getElementById('cartons');
+    const drops = dropsBox.children;
+    let i = 0;
+    const step = setInterval(() => {
+      i++;
+      el.textContent = i;
+      if (drops[i - 1]) drops[i - 1].classList.add('on');
+      if (i >= 100) clearInterval(step);
+    }, 25);
+  }
+
+  // Ameen button (counted on this device)
+  const ameenBtn = document.getElementById('ameenBtn');
+  const ameenCount = document.getElementById('ameenCount');
+  const KEY = 'ameen-abdulkarim-count';
+  function showAmeen() {
+    const c = parseInt(localStorage.getItem(KEY) || '0', 10);
+    ameenCount.textContent = c ? `دعوت له ${c} مرة، جزاك الله خيرًا` : '';
+  }
+  ameenBtn.addEventListener('click', () => {
+    const c = parseInt(localStorage.getItem(KEY) || '0', 10) + 1;
+    localStorage.setItem(KEY, c);
+    showAmeen();
+    toast('تقبّل الله دعاءك 🤍');
+  });
+  showAmeen();
+
+  // Share
+  const shareText = 'صدقة جارية عن روح المرحوم عبد الكريم سالم النقرش 🤍\nتوزيع 100 كرتونة ماء في منطقة النعيمة يوم 21/12/2026\nلا تنسوه من دعائكم:\n';
+  document.getElementById('waShare').href =
+    'https://wa.me/?text=' + encodeURIComponent(shareText + location.href);
+  document.getElementById('copyLink').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(location.href); toast('تم نسخ الرابط ✓'); }
+    catch { toast('لم يتم النسخ، انسخ الرابط من شريط العنوان'); }
+  });
+
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+</script>
+</body>
+</html>
