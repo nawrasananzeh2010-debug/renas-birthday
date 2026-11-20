@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>صدقة جارية عن روح المرحوم عبد الكريم سالم النقرش</title>
-<meta name="description" content="توزيع 100 كرتونة ماء في منطقة النعيمة عن روح المرحوم عبد الكريم سالم النقرش - 21/12/2026">
+<meta name="description" content="100 كرتونة مياه عن روح المرحوم عبد الكريم سالم النقرش - النعيمة - الإثنين 21/12/2026 الساعة 10 صباحًا">
 <meta name="theme-color" content="#0b1a2a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -371,6 +371,55 @@
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
 
+  .date-badge .nw { white-space: nowrap; }
+  @media (max-width: 480px) {
+    .date-badge { border-radius: 22px; }
+    .date-badge .nw { display: block; }
+    .date-badge .sep { display: none; }
+    #soundBtn { padding: 12px; bottom: 16px; left: 16px; }
+    #soundLabel { display: none; }
+    main { padding-bottom: 70px; }
+  }
+
+  /* ===== Clock icon ===== */
+  .clock-face {
+    position: relative; display: inline-block; width: 44px; height: 44px; border-radius: 50%;
+    border: 3px solid var(--gold-soft); box-shadow: 0 0 14px rgba(216,181,106,.4);
+  }
+  .clock-face i { position: absolute; left: 50%; bottom: 50%; width: 3px; margin-left: -1.5px; background: var(--gold-soft); border-radius: 2px; transform-origin: 50% 100%; }
+  .clock-face .h { height: 11px; transform: rotate(300deg); }
+  .clock-face .m { height: 16px; animation: spinHand 4s linear infinite; }
+  @keyframes spinHand { to { transform: rotate(360deg); } }
+
+  /* ===== Distribution timeline ===== */
+  .timeline { position: relative; max-width: 640px; margin: 0 auto; text-align: right; padding-right: 8px; }
+  .tl-line { position: absolute; top: 24px; bottom: 24px; right: 31px; width: 3px; background: rgba(255,255,255,.08); border-radius: 3px; }
+  .tl-line span { position: absolute; top: 0; right: 0; width: 100%; height: 0; border-radius: 3px;
+    background: linear-gradient(180deg, var(--gold), var(--water)); box-shadow: 0 0 10px var(--gold); transition: height .2s linear; }
+  .step { position: relative; display: flex; gap: 18px; align-items: flex-start; margin-bottom: 26px; }
+  .step .dot {
+    flex: none; width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; font-size: 1.5rem;
+    background: linear-gradient(160deg, #15304a, #0d1d2e); border: 2px solid var(--gold); z-index: 1;
+    box-shadow: 0 0 0 6px var(--bg1), 0 0 20px rgba(216,181,106,.35);
+  }
+  .step.show .dot { animation: dotPop .7s cubic-bezier(.2,1.6,.4,1); }
+  @keyframes dotPop { from { transform: scale(0) rotate(-90deg); } to { transform: none; } }
+  .step-body {
+    flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 16px 20px;
+    transition: border-color .3s, transform .3s;
+  }
+  .step-body:hover { border-color: var(--gold); transform: translateX(-6px); }
+  .step-title { font-weight: 700; color: var(--gold-soft); font-size: 1.15rem; margin-bottom: 4px; }
+  .step-body p { color: var(--text); font-size: 1.02rem; }
+  .step-body b { color: var(--water); font-weight: 700; }
+  .mosques { display: flex; justify-content: center; gap: clamp(6px, 2vw, 16px); font-size: clamp(1.6rem, 5vw, 2.4rem); margin-top: 10px; }
+  .mosques span { display: inline-block; animation: mosqueRise 2.8s ease-in-out infinite; }
+  .mosques span:nth-child(2) { animation-delay: .2s; } .mosques span:nth-child(3) { animation-delay: .4s; }
+  .mosques span:nth-child(4) { animation-delay: .6s; } .mosques span:nth-child(5) { animation-delay: .8s; }
+  .mosques span:nth-child(6) { animation-delay: 1s; }  .mosques span:nth-child(7) { animation-delay: 1.2s; }
+  @keyframes mosqueRise { 50% { transform: translateY(-10px); filter: drop-shadow(0 0 10px rgba(216,181,106,.7)); } }
+  .cta { margin-top: 26px; font-family: 'Amiri', serif; font-size: clamp(1.15rem, 3vw, 1.45rem); color: var(--gold-soft); }
+
   /* ===== Quran verses ===== */
   .verses { display: grid; gap: 22px; }
   .verse {
@@ -446,7 +495,7 @@
   <!-- Countdown -->
   <section class="reveal up" id="cd">
     <h2>العدّ التنازلي لذكرى الوفاة</h2>
-    <p class="sub">يوم توزيع الصدقة عن روحه الطاهرة</p>
+    <p class="sub">حتى موعد توزيع الصدقة عن روحه الطاهرة</p>
     <div class="countdown" id="countdown">
       <div class="unit"><div class="unit-inner"><div class="num-wrap" id="days"><div class="num">--</div></div><div class="unit-label">يوم</div></div></div>
       <div class="unit"><div class="unit-inner"><div class="num-wrap" id="hours"><div class="num">--</div></div><div class="unit-label">ساعة</div></div></div>
@@ -457,10 +506,10 @@
       <circle class="bg" cx="35" cy="35" r="32"/><circle class="fg" id="ringFg" cx="35" cy="35" r="32"/>
     </svg>
     <div class="arrived" id="arrived">
-      حلّ اليوم ذكرى وفاة المرحوم عبد الكريم سالم النقرش<br>
+      حان موعد توزيع الصدقة عن روح المرحوم عبد الكريم سالم النقرش<br>
       نسأل الله أن يتقبّل الصدقة عن روحه، وأن يجعلها في ميزان حسناته 🤲
     </div>
-    <div class="date-badge">📅 الإثنين 21 / 12 / 2026</div>
+    <div class="date-badge"><span class="nw">📅 الإثنين 21 / 12 / 2026</span> <span class="sep">·</span> <span class="nw">🕙 الساعة 10:00 صباحًا</span></div>
   </section>
 
   <!-- Details -->
@@ -477,17 +526,55 @@
       <div class="card tilt reveal up">
         <div class="pulse-ring"></div>
         <div class="icon"><span class="pin" style="display:inline-block">📍</span></div>
-        <div class="title">منطقة النعيمة</div>
-        <div class="desc">مكان التوزيع</div>
+        <div class="title">ساحة منزل المرحوم</div>
+        <div class="desc">عبد الكريم سالم النقرش، النعيمة</div>
       </div>
       <div class="card tilt reveal left">
         <div class="icon">🗓️</div>
-        <div class="title">21 ديسمبر 2026</div>
+        <div class="title">الإثنين 21 ديسمبر 2026</div>
         <div class="desc">في ذكرى وفاته رحمه الله</div>
+      </div>
+      <div class="card tilt reveal up">
+        <div class="icon clock"><span class="clock-face"><i class="h"></i><i class="m"></i></span></div>
+        <div class="title">الساعة 10:00 صباحًا</div>
+        <div class="desc">موعد التواجد والاستلام</div>
       </div>
     </div>
     <div class="drops" id="drops" aria-hidden="true"></div>
     <p class="drops-caption reveal up">كل قطرة = كرتونة ماء 💧</p>
+  </section>
+
+  <!-- Distribution plan -->
+  <section id="plan">
+    <div class="reveal up"><h2>تفاصيل التوزيع</h2><p class="sub">نرجو من الأهل والأحبة المشاركة في الأجر</p></div>
+    <div class="timeline" id="timeline">
+      <div class="tl-line"><span id="tlFill"></span></div>
+      <div class="step reveal right">
+        <div class="dot">🕙</div>
+        <div class="step-body">
+          <div class="step-title">الساعة 10:00 صباحًا</div>
+          <p>ستكون <b>100 كرتونة مياه</b> متواجدة في <b>ساحة منزل المرحوم عبد الكريم سالم النقرش</b> رحمه الله، في منطقة النعيمة.</p>
+        </div>
+      </div>
+      <div class="step reveal right">
+        <div class="dot">🤝</div>
+        <div class="step-body">
+          <div class="step-title">الاستلام</div>
+          <p>يتفضّل المشاركون باستلام الكراتين من ساحة المنزل.</p>
+        </div>
+      </div>
+      <div class="step reveal right">
+        <div class="dot">🕌</div>
+        <div class="step-body">
+          <div class="step-title">التوزيع على المساجد</div>
+          <p>وأنتم عليكم التوزيع على <b>كامل أو أغلب مساجد النعيمة</b>، جزاكم الله خيرًا وجعله في ميزان حسناتكم.</p>
+        </div>
+      </div>
+    </div>
+    <div class="mosques reveal up" aria-hidden="true">
+      <span>🕌</span><span>🕌</span><span>🕌</span><span>🕌</span><span>🕌</span><span>🕌</span><span>🕌</span>
+    </div>
+    <p class="cta reveal zoom">«الدالُّ على الخير كفاعله» — شارك ولو بكرتونة واحدة 🤍</p>
   </section>
 
   <!-- Hadith -->
@@ -502,7 +589,7 @@
 
   <!-- Quran verses -->
   <section id="quran">
-    <div class="reveal up"><h2>آيات نتذكّر بها موتانا</h2><p class="sub">بصوت الشيخ مشاري العفاسي</p></div>
+    <div class="reveal up"><h2>آيات نتذكّر بها موتانا</h2><p class="sub">بصوت القارئ إسلام صبحي</p></div>
     <div class="verses">
       <div class="verse reveal right" data-i="0">
         <div class="eq"><i></i><i></i><i></i><i></i></div>
@@ -567,8 +654,8 @@
 
 <script>
 (() => {
-  // ===== Target date: 21/12/2026, 00:00 Jordan time (UTC+3) =====
-  const TARGET = new Date('2026-12-21T00:00:00+03:00').getTime();
+  // ===== Target: 21/12/2026, 10:00 AM Jordan time (UTC+3) — distribution time =====
+  const TARGET = new Date('2026-12-21T10:00:00+03:00').getTime();
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobile = innerWidth < 640;
 
@@ -626,7 +713,7 @@
   }
   let shooters = [];
   let scrollY = 0;
-  addEventListener('scroll', () => { scrollY = window.scrollY; updateProgress(); }, { passive: true });
+  addEventListener('scroll', () => { scrollY = window.scrollY; updateProgress(); updateTimeline(); }, { passive: true });
 
   function drawSky(t) {
     sctx.clearRect(0, 0, W, H);
@@ -690,6 +777,14 @@
 
   function loop(t) { drawSky(t); drawFx(); requestAnimationFrame(loop); }
   if (!reduce) requestAnimationFrame(loop); else drawSky(0);
+
+  /* ================= Timeline fill on scroll ================= */
+  const tl = document.getElementById('timeline'), tlFill = document.getElementById('tlFill');
+  function updateTimeline() {
+    const r = tl.getBoundingClientRect();
+    const pct = Math.min(1, Math.max(0, (innerHeight * .75 - r.top) / r.height));
+    tlFill.style.height = (pct * 100) + '%';
+  }
 
   /* ================= Scroll progress ================= */
   const prog = document.getElementById('progress');
@@ -801,7 +896,7 @@
   showAmeen();
 
   /* ================= Share ================= */
-  const shareText = 'صدقة جارية عن روح المرحوم عبد الكريم سالم النقرش 🤍\nتوزيع 100 كرتونة ماء في منطقة النعيمة يوم 21/12/2026\nلا تنسوه من دعائكم:\n';
+  const shareText = 'صدقة جارية عن روح المرحوم عبد الكريم سالم النقرش 🤍\n100 كرتونة مياه في ساحة منزل المرحوم في النعيمة، الإثنين 21/12/2026 الساعة 10:00 صباحًا، للتوزيع على مساجد النعيمة\nلا تنسوه من دعائكم:\n';
   // Public link of the page (falls back to the current address when hosted elsewhere, e.g. GitHub Pages)
   const SHARE_URL = location.protocol.startsWith('http') && !/claudeusercontent|claude\.ai/.test(location.host)
     ? location.href : 'https://claude.ai/artifact/JK8kwke2vuUpz7937SQsKa';
@@ -813,8 +908,9 @@
 
   /* ================= Quran background audio ================= */
   const TRACKS = [
-    'https://everyayah.com/data/Alafasy_128kbps/059010.mp3', // الحشر 10
-    'https://everyayah.com/data/Alafasy_128kbps/002261.mp3', // البقرة 261
+    // تلاوة القارئ إسلام صبحي (مقتطعة من تسجيلات mp3quran.net)
+    'https://cdn.jsdelivr.net/gh/nawrasananzeh2010-debug/renas-birthday@8035bad188d74f3b51efe2c56966c14a671a175e/audio/islam-sobhi-hashr-10.mp3',    // الحشر 10
+    'https://cdn.jsdelivr.net/gh/nawrasananzeh2010-debug/renas-birthday@8035bad188d74f3b51efe2c56966c14a671a175e/audio/islam-sobhi-baqarah-261.mp3', // البقرة 261
   ];
   const audio = document.getElementById('quranAudio');
   const soundBtn = document.getElementById('soundBtn');
